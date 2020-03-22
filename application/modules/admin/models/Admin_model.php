@@ -8,7 +8,7 @@ class Admin_model extends CI_Model
         $db->select('*');
         $db->from('user_access');
         $db->join('user_role', 'user_role.id_role = user_access.id_role', 'inner');
-        $db->join('user_menu', 'user_menu.id_menu = user_access.id_role', 'inner');
+        $db->join('user_menu', 'user_menu.id_menu = user_access.id_menu', 'inner');
         $db->where('user_access.id_role', $this->session->userdata('role'));
         $db->where('user_menu.is_active',1);
         $menu = $db->get()->result();
