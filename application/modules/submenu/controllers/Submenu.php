@@ -7,13 +7,15 @@ class Submenu extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('menu_model', 'model');
+		$this->load->model('submenu_model', 'model');
 	}
 
-	public function index()
+	public function index($id)
 	{
+		$cek = $this->db->get_where('user_menu', ['id_menu' => $id])->row();
 		$data = [
-			'judul' => 'Menu'
+			'judul' => 'Submenu',
+			'title' =>	$cek->title
 		];
 		$this->load->view('index', $data);
 	}
