@@ -51,37 +51,6 @@
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="menu">
-                        <!-- <li class="nav-item has-treeview menu-open">
-                            <a href="<?= site_url('admin') ?>" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    User Menu
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
-                                        <i class="fas fa-fw fa-user nav-icon"></i>
-                                        <p>Profile</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('admin/logout') ?>" class="nav-link">
-                                        <i class="fas fa-fw fa-sign-out-alt nav-icon"></i>
-                                        <p>Logout</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> -->
                     </ul>
                 </nav>
             </div>
@@ -147,7 +116,6 @@
         });
     </script>
     <script>
-        console.log('<?= site_url() ?>');
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
