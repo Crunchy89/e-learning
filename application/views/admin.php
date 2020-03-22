@@ -30,7 +30,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="fas fa-fw fa-user"></i>
-                        admin
+                        <?= $this->session->userdata('user') ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
                         <a href="#" class="dropdown-item">
@@ -46,12 +46,12 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="index3.html" class="brand-link">
                 <img src="<?= base_url() ?>assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Admin</span>
+                <span class="brand-text font-weight-light"><?= $this->session->userdata('user') ?></span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="menu">
-                        <li class="nav-item has-treeview menu-open">
+                        <!-- <li class="nav-item has-treeview menu-open">
                             <a href="<?= site_url('admin') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
@@ -81,7 +81,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
             </div>
@@ -109,7 +109,7 @@
                     type: 'post',
                     dataType: 'json',
                     success: function(data) {
-                        console.log(data);
+                        var menu = ''
                         for (var i = 0; i < data.length; i++) {
                             var sub = '';
                             for (var j = 0; j < data[i].submenu.length; j++) {
@@ -121,7 +121,7 @@
                                     '</li>';
                                 sub += submenu;
                             }
-                            menu = '<li class="nav-item has-treeview">' +
+                            menu += '<li class="nav-item has-treeview">' +
                                 '<a href="#" class="nav-link">' +
                                 '<i class="nav-icon ' + data[i].icon + '"></i>' +
                                 '<p>' +
@@ -129,24 +129,25 @@
                                 '<i class="right fas fa-angle-left"></i>' +
                                 '</p>' +
                                 '</a>' +
-                                '<ul class="nav nav-treeview" id="submenu">' + sub + '</ul>' +
+                                '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
                                 '</li>';
-                            $('#menu').append(menu);
-                            $('.nav-link').click(function() {
-                                $('.nav-link').removeClass('active');
-                                $(this).addClass('active');
-                            });
-                            $('#submenu').on('click', '.nav-item', function() {
-                                url = $(this).data('url');
-                                $('#show_data').load('<?= site_url() ?>' + '/' + url);
-                            });
                         }
+                        $('#menu').html(menu);
+                        $('.nav-link').click(function() {
+                            $('.nav-link').removeClass('active');
+                            $(this).addClass('active');
+                        });
+                        $('.submenu').on('click', '.nav-item', function() {
+                            url = $(this).data('url');
+                            $('#show_data').load('<?= site_url() ?>' + '/' + url);
+                        });
                     }
                 })
             }
         });
     </script>
     <script>
+        console.log('<?= site_url() ?>');
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

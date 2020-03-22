@@ -20,8 +20,13 @@ class Admin extends MY_Controller
 		];
 		admin('index', $data);
 	}
-	public function menu(){
-		$data=$this->model->menu();
+	public function dashboard()
+	{
+		$this->load->view('index');
+	}
+	public function menu()
+	{
+		$data = $this->model->menu();
 		echo json_encode($data);
 	}
 	public function logout()
