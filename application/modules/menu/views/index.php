@@ -28,6 +28,7 @@
                                     <th>No</th>
                                     <th>Nama Menu</th>
                                     <th>Icon</th>
+                                    <th>Order</th>
                                     <th>Aktif</th>
                                     <th>Submenu</th>
                                     <th>Aksi</th>
@@ -77,6 +78,47 @@
 
 <script>
     $(document).ready(function() {
+        function show_data() {
+            $.ajax({
+                url: '<?= site_url('admin/menu') ?>',
+                type: 'post',
+                dataType: 'json',
+                success: function(data) {
+                    var menu = ''
+                    for (var i = 0; i < data.length; i++) {
+                        var sub = '';
+                        for (var j = 0; j < data[i].submenu.length; j++) {
+                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
+                                '<a href="#" class="nav-link">' +
+                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
+                                '<p>' + data[i].submenu[j].title + '</p>' +
+                                '</a>' +
+                                '</li>';
+                            sub += submenu;
+                        }
+                        menu += '<li class="nav-item has-treeview">' +
+                            '<a href="#" class="nav-link">' +
+                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
+                            '<p>' +
+                            data[i].title +
+                            '<i class="right fas fa-angle-left"></i>' +
+                            '</p>' +
+                            '</a>' +
+                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
+                            '</li>';
+                    }
+                    $('#menu').html(menu);
+                    $('.nav-link').click(function() {
+                        $('.nav-link').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                    $('.submenu').on('click', '.nav-item', function() {
+                        url = $(this).data('url');
+                        $('#show_data').load('<?= site_url() ?>' + '/' + url);
+                    });
+                }
+            })
+        }
         const form = $('.modal-body').html();
         $('#myData').DataTable({
             "processing": true,
@@ -90,6 +132,40 @@
                 "targets": [0],
                 "orderable": false
             }]
+        });
+        $('#data').on('click', '.down', function() {
+            no = $(this).data('order');
+            id = $(this).data('id_menu');
+            $.ajax({
+                url: '<?= site_url('menu/down') ?>',
+                type: 'post',
+                data: {
+                    no_order: no,
+                    id_menu: id
+                },
+                dataType: 'json',
+                success: function(result) {
+                    show_data();
+                    $('#myData').DataTable().ajax.reload();
+                }
+            })
+        });
+        $('#data').on('click', '.up', function() {
+            no = $(this).data('order');
+            id = $(this).data('id_menu');
+            $.ajax({
+                url: '<?= site_url('menu/up') ?>',
+                type: 'post',
+                data: {
+                    no_order: no,
+                    id_menu: id
+                },
+                dataType: 'json',
+                success: function(result) {
+                    show_data();
+                    $('#myData').DataTable().ajax.reload();
+                }
+            })
         });
         $('#tambah').click(function() {
             $('.modal-body').html(form);
@@ -139,6 +215,7 @@
                 contentType: false,
                 async: false,
                 success: function(data) {
+                    show_data();
                     var pesan = data;
                     $(document).Toasts('create', {
                         title: 'Success',
@@ -162,6 +239,7 @@
                 },
                 dataType: 'json',
                 success: function(data) {
+                    show_data();
                     $('#myData').DataTable().ajax.reload();
                     if (data.active == 'true') {
                         $(document).Toasts('create', {

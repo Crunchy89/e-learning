@@ -8,7 +8,7 @@ class Menu_model extends CI_Model
         $this->id = 'id_menu';
         $this->column_order = array(null, 'title', 'icon');
         $this->column_search = array('title');
-        $this->order = array($this->id => 'asc');
+        $this->order = array('no_order' => 'asc');
     }
 
     public function getRows($postData)
@@ -63,10 +63,12 @@ class Menu_model extends CI_Model
     {
         $title = htmlspecialchars($_POST['title']);
         $icon = htmlspecialchars($_POST['icon']);
+        $hitung = count($this->db->get('user_menu')->result()) + 1;
         $data = [
             'title' => $title,
             'icon' => $icon,
-            'is_active' => 1
+            'is_active' => 1,
+            'no_order' => $hitung
         ];
         $this->db->insert($this->table, $data);
         return "Data Menu Berhasil Ditambah";
@@ -105,5 +107,38 @@ class Menu_model extends CI_Model
         $this->db->where($this->id, $id);
         $data['data'] = $this->db->update($this->table);
         return $data;
+    }
+    public function down()
+    {
+        $order = $this->input->post('no_order');
+        $id_menu = $this->input->post('id_menu');
+        $hitung = count($this->db->get($this->table)->result()) + 1;
+        if ($order < $hitung) {
+            $up = $this->db->get_where($this->table, ['no_order' => $order + 1])->row();
+            $this->db->set('no_order', $order + 1);
+            $this->db->where($this->id, $id_menu);
+            $this->db->update($this->table);
+            $this->db->set('no_order', $up->no_order - 1);
+            $this->db->where($this->id, $up->id_menu);
+            $this->db->update($this->table);
+            return true;
+        }
+        return false;
+    }
+    public function up()
+    {
+        $order = $this->input->post('no_order');
+        $id_menu = $this->input->post('id_menu');
+        if ($order > 1) {
+            $up = $this->db->get_where($this->table, ['no_order' => $order - 1])->row();
+            $this->db->set('no_order', $order - 1);
+            $this->db->where($this->id, $id_menu);
+            $this->db->update($this->table);
+            $this->db->set('no_order', $up->no_order + 1);
+            $this->db->where($this->id, $up->id_menu);
+            $this->db->update($this->table);
+            return true;
+        }
+        return false;
     }
 }

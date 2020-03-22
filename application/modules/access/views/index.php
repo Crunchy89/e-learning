@@ -61,6 +61,47 @@
 				},
 				dataType: 'json',
 				success: function(result) {
+					
+					$.ajax({
+                url: '<?= site_url('admin/menu') ?>',
+                type: 'post',
+                dataType: 'json',
+                success: function(data) {
+                    var menu = ''
+                    for (var i = 0; i < data.length; i++) {
+                        var sub = '';
+                        for (var j = 0; j < data[i].submenu.length; j++) {
+                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
+                                '<a href="#" class="nav-link">' +
+                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
+                                '<p>' + data[i].submenu[j].title + '</p>' +
+                                '</a>' +
+                                '</li>';
+                            sub += submenu;
+                        }
+                        menu += '<li class="nav-item has-treeview">' +
+                            '<a href="#" class="nav-link">' +
+                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
+                            '<p>' +
+                            data[i].title +
+                            '<i class="right fas fa-angle-left"></i>' +
+                            '</p>' +
+                            '</a>' +
+                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
+                            '</li>';
+                    }
+                    $('#menu').html(menu);
+                    $('.nav-link').click(function() {
+                        $('.nav-link').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                    $('.submenu').on('click', '.nav-item', function() {
+                        url = $(this).data('url');
+                        $('#show_data').load('<?= site_url() ?>' + '/' + url);
+                    });
+                }
+            })
+
 					if (result == true) {
 						$(document).Toasts('create', {
 							title: 'Success',

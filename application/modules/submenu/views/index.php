@@ -84,6 +84,47 @@
 
 <script>
     $(document).ready(function() {
+        function show_data() {
+            $.ajax({
+                url: '<?= site_url('admin/menu') ?>',
+                type: 'post',
+                dataType: 'json',
+                success: function(data) {
+                    var menu = ''
+                    for (var i = 0; i < data.length; i++) {
+                        var sub = '';
+                        for (var j = 0; j < data[i].submenu.length; j++) {
+                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
+                                '<a href="#" class="nav-link">' +
+                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
+                                '<p>' + data[i].submenu[j].title + '</p>' +
+                                '</a>' +
+                                '</li>';
+                            sub += submenu;
+                        }
+                        menu += '<li class="nav-item has-treeview">' +
+                            '<a href="#" class="nav-link">' +
+                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
+                            '<p>' +
+                            data[i].title +
+                            '<i class="right fas fa-angle-left"></i>' +
+                            '</p>' +
+                            '</a>' +
+                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
+                            '</li>';
+                    }
+                    $('#menu').html(menu);
+                    $('.nav-link').click(function() {
+                        $('.nav-link').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                    $('.submenu').on('click', '.nav-item', function() {
+                        url = $(this).data('url');
+                        $('#show_data').load('<?= site_url() ?>' + '/' + url);
+                    });
+                }
+            })
+        }
         const form = $('.modal-body').html();
         id_menu = $('#id_menu').val();
         $('#myData').DataTable({
@@ -101,10 +142,9 @@
         });
         $('#tambah').click(function() {
             $('.modal-body').html(form);
-            aksi = 
-            '<input type="hidden" name="aksi" id="aksi">'+
-            '<input type="hidden" name="id_m" id="id_m">'
-            ;
+            aksi =
+                '<input type="hidden" name="aksi" id="aksi">' +
+                '<input type="hidden" name="id_m" id="id_m">';
             $('#add').html(aksi);
             $('#modal').find('h5').html('Tambah')
             $('#modal').find('#btn').html('Tambah')
@@ -115,9 +155,8 @@
         $('#data').on('click', '.edit', function() {
             $('.modal-body').html(form);
             aksi = '<input type="hidden" name="aksi" id="aksi">' +
-                '<input type="hidden" name="id" id="id">'+
-                '<input type="hidden" name="id_m" id="id_m">'
-                ;
+                '<input type="hidden" name="id" id="id">' +
+                '<input type="hidden" name="id_m" id="id_m">';
             $('#add').html(aksi);
             $('#modal').find('h5').html('Edit')
             $('#modal').find('#btn').html('Edit')
@@ -156,6 +195,7 @@
                 contentType: false,
                 async: false,
                 success: function(data) {
+                    show_data();
                     var pesan = data;
                     $(document).Toasts('create', {
                         title: 'Success',
@@ -179,6 +219,7 @@
                 },
                 dataType: 'json',
                 success: function(data) {
+                    show_data();
                     $('#myData').DataTable().ajax.reload();
                     if (data.active == 'true') {
                         $(document).Toasts('create', {

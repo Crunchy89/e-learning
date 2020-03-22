@@ -70,49 +70,45 @@
     </div>
     <script>
         $(document).ready(function() {
-            show_menu();
-
-            function show_menu() {
-                $.ajax({
-                    url: '<?= site_url('admin/menu') ?>',
-                    type: 'post',
-                    dataType: 'json',
-                    success: function(data) {
-                        var menu = ''
-                        for (var i = 0; i < data.length; i++) {
-                            var sub = '';
-                            for (var j = 0; j < data[i].submenu.length; j++) {
-                                submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
-                                    '<a href="#" class="nav-link">' +
-                                    '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
-                                    '<p>' + data[i].submenu[j].title + '</p>' +
-                                    '</a>' +
-                                    '</li>';
-                                sub += submenu;
-                            }
-                            menu += '<li class="nav-item has-treeview">' +
+            $.ajax({
+                url: '<?= site_url('admin/menu') ?>',
+                type: 'post',
+                dataType: 'json',
+                success: function(data) {
+                    var menu = ''
+                    for (var i = 0; i < data.length; i++) {
+                        var sub = '';
+                        for (var j = 0; j < data[i].submenu.length; j++) {
+                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
                                 '<a href="#" class="nav-link">' +
-                                '<i class="nav-icon ' + data[i].icon + '"></i>' +
-                                '<p>' +
-                                data[i].title +
-                                '<i class="right fas fa-angle-left"></i>' +
-                                '</p>' +
+                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
+                                '<p>' + data[i].submenu[j].title + '</p>' +
                                 '</a>' +
-                                '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
                                 '</li>';
+                            sub += submenu;
                         }
-                        $('#menu').html(menu);
-                        $('.nav-link').click(function() {
-                            $('.nav-link').removeClass('active');
-                            $(this).addClass('active');
-                        });
-                        $('.submenu').on('click', '.nav-item', function() {
-                            url = $(this).data('url');
-                            $('#show_data').load('<?= site_url() ?>' + '/' + url);
-                        });
+                        menu += '<li class="nav-item has-treeview">' +
+                            '<a href="#" class="nav-link">' +
+                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
+                            '<p>' +
+                            data[i].title +
+                            '<i class="right fas fa-angle-left"></i>' +
+                            '</p>' +
+                            '</a>' +
+                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
+                            '</li>';
                     }
-                })
-            }
+                    $('#menu').html(menu);
+                    $('.nav-link').click(function() {
+                        $('.nav-link').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                    $('.submenu').on('click', '.nav-item', function() {
+                        url = $(this).data('url');
+                        $('#show_data').load('<?= site_url() ?>' + '/' + url);
+                    });
+                }
+            })
         });
     </script>
     <script>
@@ -124,6 +120,7 @@
     <script src="<?= base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="<?= base_url() ?>assets/dist/js/adminlte.js"></script>
     <script src="<?= base_url() ?>assets/dist/js/demo.js"></script>
+    <script src="<?= base_url() ?>assets/dist/js/costum.js"></script>
 </body>
 
 </html>

@@ -11,6 +11,7 @@ class Admin_model extends CI_Model
         $db->join('user_menu', 'user_menu.id_menu = user_access.id_menu', 'inner');
         $db->where('user_access.id_role', $this->session->userdata('role'));
         $db->where('user_menu.is_active',1);
+        $db->order_by('user_menu.no_order','asc');
         $menu = $db->get()->result();
         foreach ($menu as $m) {
             $data[] = [

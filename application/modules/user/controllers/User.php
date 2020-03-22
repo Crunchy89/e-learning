@@ -30,10 +30,14 @@ class User extends MY_Controller
 		$i = $_POST['start'];
 		foreach ($user as $d) {
 			$i++;
+			$disabled = '';
+			if ($d->id_role == 1) {
+				$disabled = 'disabled';
+			}
 			if ($d->is_active == 1) {
-				$active = '<input type="checkbox" name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+				$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
 			} else {
-				$active = '<input type="checkbox" name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+				$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
 			}
 			$btn_reset = '<button type="button" class="btn btn-info btn-xs reset" data-id_reset="' . $d->id_user . '"><i class="fas fa-fw fa-cog"></i> Reset Password</button>';
 			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit"  data-user="' . $d->username . '" data-id_role="' . $d->id_role . '" data-id="' . $d->id_user . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';

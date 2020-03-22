@@ -28,10 +28,14 @@ class Submenu extends MY_Controller
 		$i = $_POST['start'];
 		foreach ($menu as $d) {
 			$i++;
+			$disabled = '';
+			if ($d->id_menu == 1) {
+				$disabled = 'disabled';
+			}
 			if ($d->is_active == 1) {
-				$active = '<input type="checkbox" name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+				$active = '<input type="checkbox" '.$disabled.' name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
 			} else {
-				$active = '<input type="checkbox" name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+				$active = '<input type="checkbox" '.$disabled.' name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
 			}
 			$icon = '<i class="' . $d->icon . '"></i>';
 			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-icon="' . $d->icon . '" data-title="' . $d->title . '" data-url="' . $d->url . '" data-id_submenu="' . $d->id_submenu . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
