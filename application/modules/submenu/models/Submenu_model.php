@@ -11,12 +11,13 @@ class Submenu_model extends CI_Model
         $this->order = array($this->id => 'asc');
     }
 
-    public function getRows($postData)
+    public function getRows($postData, $id)
     {
         $this->_get_datatables_query($postData);
         if ($postData['length'] != -1) {
             $this->db->limit($postData['length'], $postData['start']);
         }
+        $this->db->where('id_menu', $id);
         $query = $this->db->get();
         return $query->result();
     }
@@ -62,34 +63,42 @@ class Submenu_model extends CI_Model
     public function tambah()
     {
         $title = htmlspecialchars($_POST['title']);
+        $id_menu = htmlspecialchars($_POST['id_m']);
         $icon = htmlspecialchars($_POST['icon']);
+        $url = htmlspecialchars($_POST['url']);
         $data = [
+            'id_menu' => $id_menu,
             'title' => $title,
             'icon' => $icon,
+            'url' => $url,
             'is_active' => 1
         ];
         $this->db->insert($this->table, $data);
-        return "Data Menu Berhasil Ditambah";
+        return "Data Submenu Berhasil Ditambah";
     }
     public function edit()
     {
         $id = htmlspecialchars($_POST['id']);
+        $id_menu = htmlspecialchars($_POST['id_m']);
         $title = htmlspecialchars($_POST['title']);
         $icon = htmlspecialchars($_POST['icon']);
+        $url = htmlspecialchars($_POST['url']);
         $data = [
             'title' => $title,
-            'icon' => $icon
+            'icon' => $icon,
+            'id_menu' => $id_menu,
+            'url' => $url
         ];
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
-        return "Data Berhasil diubah";
+        return "Data Submenu Berhasil diubah";
     }
     public function hapus()
     {
         $id = htmlspecialchars($_POST['id']);
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-        return "Data Berhasil dihapus";
+        return "Data Submenu Berhasil dihapus";
     }
     public function active()
     {

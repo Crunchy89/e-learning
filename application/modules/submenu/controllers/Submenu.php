@@ -15,28 +15,28 @@ class Submenu extends MY_Controller
 		$cek = $this->db->get_where('user_menu', ['id_menu' => $id])->row();
 		$data = [
 			'judul' => 'Submenu',
-			'title' =>	$cek->title
+			'title' =>	$cek->title,
+			'id' => $id
 		];
 		$this->load->view('index', $data);
 	}
-	function getLists()
+	function getLists($id)
 	{
 		$data = array();
-		$menu = $this->model->getRows($_POST);
+		$menu = $this->model->getRows($_POST, $id);
 
 		$i = $_POST['start'];
 		foreach ($menu as $d) {
 			$i++;
 			if ($d->is_active == 1) {
-				$active = '<input type="checkbox" name="active" class="form-control " data-id_menu="' . $d->id_menu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+				$active = '<input type="checkbox" name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
 			} else {
-				$active = '<input type="checkbox" name="active" class="form-control " data-id_menu="' . $d->id_menu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+				$active = '<input type="checkbox" name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
 			}
-			$submenu = '<button type="button" class="btn btn-info btn-xs sub" data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-eye"></i> Submenu</button>';
 			$icon = '<i class="' . $d->icon . '"></i>';
-			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-icon="' . $d->icon . '" data-title="' . $d->title . '" data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
-			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
-			$data[] = array($i, $d->title, $icon, $active, $submenu, $btn_edit . ' ' . $btn_hapus);
+			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-icon="' . $d->icon . '" data-title="' . $d->title . '" data-url="' . $d->url . '" data-id_submenu="' . $d->id_submenu . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
+			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_submenu="' . $d->id_submenu . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+			$data[] = array($i, $d->title, $icon, $d->url, $active, $btn_edit . ' ' . $btn_hapus);
 		}
 
 		$output = array(
