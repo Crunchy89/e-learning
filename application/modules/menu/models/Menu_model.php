@@ -112,7 +112,7 @@ class Menu_model extends CI_Model
     {
         $order = $this->input->post('no_order');
         $id_menu = $this->input->post('id_menu');
-        $hitung = count($this->db->get($this->table)->result()) + 1;
+        $hitung = count($this->db->get($this->table)->result());
         if ($order < $hitung) {
             $up = $this->db->get_where($this->table, ['no_order' => $order + 1])->row();
             $this->db->set('no_order', $order + 1);

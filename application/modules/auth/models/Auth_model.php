@@ -31,8 +31,8 @@ class Auth_model extends CI_Model
     }
     public function login()
     {
-        $user = $_POST['user'];
-        $pass = $_POST['pass'];
+        $user = htmlspecialchars($_POST['user']);
+        $pass = htmlspecialchars($_POST['pass']);
         $cek = $this->db->get_where('user', ['username' => $user])->row();
         if ($cek) {
             if ($cek->is_active == 0) {
@@ -48,8 +48,8 @@ class Auth_model extends CI_Model
                     'id' => $cek->id_user
                 ];
                 $this->session->set_userdata($data);
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger text-center" role="alert">
-                selamat datang ' . $cek->username . '
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success text-center" role="alert">
+                Selamat datang ' . $cek->username . ' !!!
               </div>');
                 redirect('admin');
             }

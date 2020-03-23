@@ -60,9 +60,9 @@
         </div>
         <footer class="main-footer">
             <strong>Copyright &copy; <?= date('Y') ?></strong>
-            Al-Hasanain NU Beraim
+            Ferdy Barliansyah R.
             <div class="float-right d-none d-sm-inline-block">
-                Ferdy Barliansyah R.
+                Contributed to Lombok Cyber Community
             </div>
         </footer>
         <aside class="control-sidebar control-sidebar-dark">

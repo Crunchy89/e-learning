@@ -6,6 +6,21 @@ class Menu extends MY_Controller
 
 	public function __construct()
 	{
+		if (!$this->session->userdata('role')) {
+			redirect('auth');
+		}
+		if ($this->session->userdata('role')) {
+			$this->db->select('*');
+			$this->db->from('user_access');
+			$this->db->join('user_submenu', 'user_access.id_menu=user_submenu.id_menu', 'inner');
+			$this->db->where('user_access.id_role', $this->session->userdata('role'));
+			$this->db->where('user_submenu.url', 'menu');
+			$access = $this->db->get()->result();
+			if (!$access) {
+				echo "access denied";
+				die;
+			}
+		}
 		parent::__construct();
 		$this->load->model('menu_model', 'model');
 	}
@@ -38,7 +53,7 @@ class Menu extends MY_Controller
 			$submenu = '<button type="button" class="btn btn-info btn-xs sub" data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-eye"></i> Submenu</button>';
 			$icon = '<i class="' . $d->icon . '"></i>';
 			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-icon="' . $d->icon . '" data-title="' . $d->title . '" data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
-			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+			$btn_hapus = '<button ' . $disabled . ' type="button" class="btn btn-danger btn-xs hapus"  data-id_menu="' . $d->id_menu . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
 			$data[] = array($i, $d->title, $icon, $order, $active, $submenu, $btn_edit . ' ' . $btn_hapus);
 		}
 

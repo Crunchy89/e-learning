@@ -8,7 +8,7 @@ class Submenu_model extends CI_Model
         $this->id = 'id_submenu';
         $this->column_order = array(null, 'title', 'icon', 'url');
         $this->column_search = array('title');
-        $this->order = array($this->id => 'asc');
+        $this->order = array('no_urut' => 'asc');
     }
 
     public function getRows($postData, $id)
@@ -66,12 +66,14 @@ class Submenu_model extends CI_Model
         $id_menu = htmlspecialchars($_POST['id_m']);
         $icon = htmlspecialchars($_POST['icon']);
         $url = htmlspecialchars($_POST['url']);
+        $order=count($this->db->get_where($this->table, ['id_menu' => $id_menu])->result()) + 1;
         $data = [
             'id_menu' => $id_menu,
             'title' => $title,
             'icon' => $icon,
             'url' => $url,
-            'is_active' => 1
+            'is_active' => 1,
+            'no_urut' => $order
         ];
         $this->db->insert($this->table, $data);
         return "Data Submenu Berhasil Ditambah";
@@ -114,5 +116,40 @@ class Submenu_model extends CI_Model
         $this->db->where($this->id, $id);
         $data['data'] = $this->db->update($this->table);
         return $data;
+    }
+    public function down()
+    {
+        $order = $this->input->post('no_order');
+        $id_menu = $this->input->post('id_menu');
+        $id_submenu = $this->input->post('id_submenu');
+        $hitung = count($this->db->get_where($this->table, ['id_menu' => $id_menu])->result());
+        if ($order < $hitung) {
+            $up = $this->db->get_where($this->table, ['id_menu' => $id_menu, 'no_urut' => $order + 1])->row();
+            $this->db->set('no_urut', $order + 1);
+            $this->db->where($this->id, $id_submenu);
+            $this->db->update($this->table);
+            $this->db->set('no_urut', $up->no_urut - 1);
+            $this->db->where($this->id, $up->id_submenu);
+            $this->db->update($this->table);
+            return true;
+        }
+        return false;
+    }
+    public function up()
+    {
+        $order = $this->input->post('no_order');
+        $id_menu = $this->input->post('id_menu');
+        $id_submenu = $this->input->post('id_submenu');
+        if ($order > 1) {
+            $up = $this->db->get_where($this->table, ['id_menu' => $id_menu, 'no_urut' => $order - 1])->row();
+            $this->db->set('no_urut', $order - 1);
+            $this->db->where($this->id, $id_submenu);
+            $this->db->update($this->table);
+            $this->db->set('no_urut', $up->no_urut + 1);
+            $this->db->where($this->id, $up->id_submenu);
+            $this->db->update($this->table);
+            return true;
+        }
+        return false;
     }
 }

@@ -32,6 +32,7 @@
                                     <th>Nama SubMenu</th>
                                     <th>Icon</th>
                                     <th>Url</th>
+                                    <th>Order</th>
                                     <th>Aktif</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -243,5 +244,45 @@
         $('#reload').click(function() {
             $('#show_data').load('<?= site_url('submenu/index/') ?>' + id_menu);
         });
+
+        $('#data').on('click', '.down', function() {
+            no = $(this).data('order');
+            id = $(this).data('id_menu');
+            id_sub = $(this).data('id_submenu');
+            $.ajax({
+                url: '<?= site_url('submenu/down') ?>',
+                type: 'post',
+                data: {
+                    no_order: no,
+                    id_menu: id,
+                    id_submenu: id_sub
+                },
+                dataType: 'json',
+                success: function(result) {
+                    show_data();
+                    $('#myData').DataTable().ajax.reload();
+                }
+            })
+        });
+        $('#data').on('click', '.up', function() {
+            no = $(this).data('order');
+            id = $(this).data('id_menu');
+            id_sub = $(this).data('id_submenu');
+            $.ajax({
+                url: '<?= site_url('submenu/up') ?>',
+                type: 'post',
+                data: {
+                    no_order: no,
+                    id_menu: id,
+                    id_submenu: id_sub
+                },
+                dataType: 'json',
+                success: function(result) {
+                    show_data();
+                    $('#myData').DataTable().ajax.reload();
+                }
+            })
+        });
+
     });
 </script>
