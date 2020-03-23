@@ -120,7 +120,6 @@
     <script src="<?= base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="<?= base_url() ?>assets/dist/js/adminlte.js"></script>
     <script src="<?= base_url() ?>assets/dist/js/demo.js"></script>
-    <script src="<?= base_url() ?>assets/dist/js/costum.js"></script>
 </body>
 
 </html>
