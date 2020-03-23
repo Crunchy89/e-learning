@@ -6,7 +6,7 @@ class Submenu_model extends CI_Model
     {
         $this->table = 'user_submenu';
         $this->id = 'id_submenu';
-        $this->column_order = array(null, 'title', 'icon', 'url');
+        $this->column_order = array(null, 'title', 'icon', 'url', null, 'is_active', null);
         $this->column_search = array('title');
         $this->order = array('no_urut' => 'asc');
     }
@@ -66,7 +66,7 @@ class Submenu_model extends CI_Model
         $id_menu = htmlspecialchars($_POST['id_m']);
         $icon = htmlspecialchars($_POST['icon']);
         $url = htmlspecialchars($_POST['url']);
-        $order=count($this->db->get_where($this->table, ['id_menu' => $id_menu])->result()) + 1;
+        $order = count($this->db->get_where($this->table, ['id_menu' => $id_menu])->result()) + 1;
         $data = [
             'id_menu' => $id_menu,
             'title' => $title,

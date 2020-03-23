@@ -6,7 +6,7 @@ class User_model extends CI_Model
     {
         $this->table = 'user';
         $this->id = 'id_user';
-        $this->column_order = array(null, 'username', 'role', 'is_active');
+        $this->column_order = array(null, 'username', 'role', 'is_active', null);
         $this->column_search = array('username', 'role');
         $this->order = array('id_user' => 'asc');
     }

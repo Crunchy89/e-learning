@@ -6,7 +6,7 @@ class Menu_model extends CI_Model
     {
         $this->table = 'user_menu';
         $this->id = 'id_menu';
-        $this->column_order = array(null, 'title', 'icon');
+        $this->column_order = array(null, 'title', 'icon', null, 'is_active', null, null);
         $this->column_search = array('title');
         $this->order = array('no_order' => 'asc');
     }

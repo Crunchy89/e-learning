@@ -6,7 +6,7 @@ class Role_model extends CI_Model
     {
         $this->table = 'user_role';
         $this->id = 'id_role';
-        $this->column_order = array(null, 'role');
+        $this->column_order = array(null, 'role', null);
         $this->column_search = array('role');
         $this->order = array('id_role' => 'asc');
     }
