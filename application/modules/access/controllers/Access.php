@@ -17,8 +17,7 @@ class Access extends MY_Controller
 			$this->db->where('user_submenu.url', 'access');
 			$access = $this->db->get()->result();
 			if (!$access) {
-				echo "access denied";
-				die;
+				redirect('page');
 			}
 		}
 		parent::__construct();
@@ -27,10 +26,17 @@ class Access extends MY_Controller
 
 	public function index()
 	{
+		if ($this->session->userdata('role') != 1) {
+			$role = $this->db->query('SELECT * FROM user_role WHERE id_role != 1')->result();
+			$menu = $this->db->query('SELECT * FROM user_menu WHERE id_menu != 1 ORDER BY no_order ASC')->result();
+		} else {
+			$role = $this->db->get('user_role')->result();
+			$menu = $this->db->get('user_menu')->result();
+		}
 		$data = [
 			'judul' => 'Access',
-			'role' => $this->db->get('user_role')->result(),
-			'menu' => $this->db->get('user_menu')->result()
+			'role' => $role,
+			'menu' => $menu
 		];
 		$this->load->view('index', $data);
 	}

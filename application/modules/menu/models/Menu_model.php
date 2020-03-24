@@ -118,9 +118,11 @@ class Menu_model extends CI_Model
             $this->db->set('no_order', $order + 1);
             $this->db->where($this->id, $id_menu);
             $this->db->update($this->table);
-            $this->db->set('no_order', $up->no_order - 1);
-            $this->db->where($this->id, $up->id_menu);
-            $this->db->update($this->table);
+            if($up){
+                $this->db->set('no_order', $up->no_order - 1);
+                $this->db->where($this->id, $up->id_menu);
+                $this->db->update($this->table);
+            }
             return true;
         }
         return false;
@@ -134,9 +136,11 @@ class Menu_model extends CI_Model
             $this->db->set('no_order', $order - 1);
             $this->db->where($this->id, $id_menu);
             $this->db->update($this->table);
-            $this->db->set('no_order', $up->no_order + 1);
-            $this->db->where($this->id, $up->id_menu);
-            $this->db->update($this->table);
+            if($up){
+                $this->db->set('no_order', $up->no_order + 1);
+                $this->db->where($this->id, $up->id_menu);
+                $this->db->update($this->table);
+            }
             return true;
         }
         return false;

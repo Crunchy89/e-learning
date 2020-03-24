@@ -17,8 +17,7 @@ class Menu extends MY_Controller
 			$this->db->where('user_submenu.url', 'menu');
 			$access = $this->db->get()->result();
 			if (!$access) {
-				echo "access denied";
-				die;
+				redirect('page');
 			}
 		}
 		parent::__construct();

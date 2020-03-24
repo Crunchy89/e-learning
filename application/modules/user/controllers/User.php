@@ -6,7 +6,7 @@ class User extends MY_Controller
 
 	public function __construct()
 	{
-		if(!$this->session->userdata('role')){
+		if (!$this->session->userdata('role')) {
 			redirect('auth');
 		}
 		if ($this->session->userdata('role')) {
@@ -17,8 +17,7 @@ class User extends MY_Controller
 			$this->db->where('user_submenu.url', 'user');
 			$access = $this->db->get()->result();
 			if (!$access) {
-				echo "access denied";
-				die;
+				redirect('page');
 			}
 		}
 		parent::__construct();
@@ -44,20 +43,38 @@ class User extends MY_Controller
 
 		$i = $_POST['start'];
 		foreach ($user as $d) {
-			$i++;
-			$disabled = '';
-			if ($d->id_role == 1) {
-				$disabled = 'disabled';
-			}
-			if ($d->is_active == 1) {
-				$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+			if ($this->session->userdata('role') != 1) {
+				if ($d->id_user != 1) {
+					$i++;
+					$disabled = '';
+					if ($d->id_role == 1) {
+						$disabled = 'disabled';
+					}
+					if ($d->is_active == 1) {
+						$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+					} else {
+						$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+					}
+					$btn_reset = '<button type="button" class="btn btn-info btn-xs reset" data-id_reset="' . $d->id_user . '"><i class="fas fa-fw fa-cog"></i> Reset Password</button>';
+					$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit"  data-user="' . $d->username . '" data-id_role="' . $d->id_role . '" data-id="' . $d->id_user . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
+					$data[] = array($i, $d->username, $d->role, $active, $btn_reset . ' ' . $btn_edit);
+				}
 			} else {
-				$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+				$i++;
+				$disabled = '';
+				if ($d->id_role == 1) {
+					$disabled = 'disabled';
+				}
+				if ($d->is_active == 1) {
+					$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+				} else {
+					$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_user="' . $d->id_user . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+				}
+				$btn_reset = '<button type="button" class="btn btn-info btn-xs reset" data-id_reset="' . $d->id_user . '"><i class="fas fa-fw fa-cog"></i> Reset Password</button>';
+				$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit"  data-user="' . $d->username . '" data-id_role="' . $d->id_role . '" data-id="' . $d->id_user . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
+				$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_hapus="' . $d->id_user . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+				$data[] = array($i, $d->username, $d->role, $active, $btn_reset . ' ' . $btn_edit . ' ' . $btn_hapus);
 			}
-			$btn_reset = '<button type="button" class="btn btn-info btn-xs reset" data-id_reset="' . $d->id_user . '"><i class="fas fa-fw fa-cog"></i> Reset Password</button>';
-			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit"  data-user="' . $d->username . '" data-id_role="' . $d->id_role . '" data-id="' . $d->id_user . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
-			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_hapus="' . $d->id_user . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
-			$data[] = array($i, $d->username, $d->role, $active, $btn_reset . ' ' . $btn_edit . ' ' . $btn_hapus);
 		}
 
 		$output = array(

@@ -69,7 +69,7 @@
                     </div>
                     <div class="form-group">
                         <label for="url">Url</label>
-                        <input type="text" name="url" id="url" class="form-control form-control-sm" placeholder="Icon" required>
+                        <input type="text" name="url" id="url" class="form-control form-control-sm" placeholder="Url" required>
                     </div>
                     <div id="add">
                     </div>

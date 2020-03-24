@@ -6,7 +6,7 @@ class Role extends MY_Controller
 
 	public function __construct()
 	{
-		if(!$this->session->userdata('role')){
+		if (!$this->session->userdata('role')) {
 			redirect('auth');
 		}
 		if ($this->session->userdata('role')) {
@@ -17,8 +17,7 @@ class Role extends MY_Controller
 			$this->db->where('user_submenu.url', 'role');
 			$access = $this->db->get()->result();
 			if (!$access) {
-				echo "access denied";
-				die;
+				redirect('page');
 			}
 		}
 		parent::__construct();
@@ -41,10 +40,19 @@ class Role extends MY_Controller
 
 		$i = $_POST['start'];
 		foreach ($role as $d) {
-			$i++;
-			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-role="' . $d->role . '" data-id_role="' . $d->id_role . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
-			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
-			$data[] = array($i, $d->role, $btn_edit . ' ' . $btn_hapus);
+			if ($this->session->userdata('role') != 1) {
+				if ($d->id_role != 1) {
+					$i++;
+					$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-role="' . $d->role . '" data-id_role="' . $d->id_role . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
+					$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+					$data[] = array($i, $d->role, $btn_edit . ' ' . $btn_hapus);
+				}
+			} else {
+				$i++;
+				$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-role="' . $d->role . '" data-id_role="' . $d->id_role . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
+				$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+				$data[] = array($i, $d->role, $btn_edit . ' ' . $btn_hapus);
+			}
 		}
 
 		$output = array(
@@ -56,16 +64,16 @@ class Role extends MY_Controller
 		echo json_encode($output);
 	}
 	public function aksi()
-    {
-        if ($_POST['aksi'] == 'tambah') {
-            $data = $this->model->tambah();
-            echo json_encode($data);
-        } else if ($_POST['aksi'] == 'edit') {
-            $data = $this->model->edit();
-            echo json_encode($data);
-        } else if ($_POST['aksi'] == 'hapus') {
-            $data = $this->model->hapus();
-            echo json_encode($data);
-        }
-    }
+	{
+		if ($_POST['aksi'] == 'tambah') {
+			$data = $this->model->tambah();
+			echo json_encode($data);
+		} else if ($_POST['aksi'] == 'edit') {
+			$data = $this->model->edit();
+			echo json_encode($data);
+		} else if ($_POST['aksi'] == 'hapus') {
+			$data = $this->model->hapus();
+			echo json_encode($data);
+		}
+	}
 }

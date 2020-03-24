@@ -6,16 +6,26 @@ class Submenu extends MY_Controller
 
 	public function __construct()
 	{
-		if(!$this->session->userdata('role')){
+		if (!$this->session->userdata('role')) {
 			redirect('auth');
 		}
-		
 		parent::__construct();
 		$this->load->model('submenu_model', 'model');
 	}
 
 	public function index($id)
 	{
+		if ($this->session->userdata('role')) {
+			$this->db->select('*');
+			$this->db->from('user_access');
+			$this->db->join('user_submenu', 'user_access.id_menu=user_submenu.id_menu', 'inner');
+			$this->db->where('user_access.id_role', $this->session->userdata('role'));
+			$this->db->where('user_submenu.id_menu', $id);
+			$access = $this->db->get()->result();
+			if (!$access) {
+				redirect('page');
+			}
+		}
 		$cek = $this->db->get_where('user_menu', ['id_menu' => $id])->row();
 		$data = [
 			'judul' => 'Submenu',
@@ -91,5 +101,4 @@ class Submenu extends MY_Controller
 		$data = $this->model->up();
 		echo json_encode($data);
 	}
-	
 }

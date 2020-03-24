@@ -128,9 +128,11 @@ class Submenu_model extends CI_Model
             $this->db->set('no_urut', $order + 1);
             $this->db->where($this->id, $id_submenu);
             $this->db->update($this->table);
-            $this->db->set('no_urut', $up->no_urut - 1);
-            $this->db->where($this->id, $up->id_submenu);
-            $this->db->update($this->table);
+            if($up){
+                $this->db->set('no_urut', $up->no_urut - 1);
+                $this->db->where($this->id, $up->id_submenu);
+                $this->db->update($this->table);
+            }
             return true;
         }
         return false;
@@ -145,9 +147,11 @@ class Submenu_model extends CI_Model
             $this->db->set('no_urut', $order - 1);
             $this->db->where($this->id, $id_submenu);
             $this->db->update($this->table);
-            $this->db->set('no_urut', $up->no_urut + 1);
-            $this->db->where($this->id, $up->id_submenu);
-            $this->db->update($this->table);
+            if($up){
+                $this->db->set('no_urut', $up->no_urut + 1);
+                $this->db->where($this->id, $up->id_submenu);
+                $this->db->update($this->table);
+            }
             return true;
         }
         return false;

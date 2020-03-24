@@ -33,9 +33,9 @@
                         <?= $this->session->userdata('user') ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
+                        <!-- <a href="#" class="dropdown-item" id="profile">
                             <i class="fas fa-fw fa-user mr-2"></i> Profile
-                        </a>
+                        </a> -->
                         <a href="<?= site_url('admin/logout') ?>" class="dropdown-item">
                             <i class="fas fa-fw fa-sign-out-alt mr-2"></i> Logout
                         </a>
@@ -56,13 +56,14 @@
             </div>
         </aside>
         <div class="content-wrapper" id="show_data">
+            
             <?= $view ?>
         </div>
         <footer class="main-footer">
             <strong>Copyright &copy; <?= date('Y') ?></strong>
             Ferdy Barliansyah R.
             <div class="float-right d-none d-sm-inline-block">
-                Contributed to Lombok Cyber Community
+                Contributed to SMK Al-Hasanain NU Beraim
             </div>
         </footer>
         <aside class="control-sidebar control-sidebar-dark">
@@ -108,7 +109,10 @@
                         $('#show_data').load('<?= site_url() ?>' + '/' + url);
                     });
                 }
-            })
+            });
+            // $('#profile').click(function() {
+            //     $('#show_data').load('<?= site_url('profile') ?>');
+            // })
         });
     </script>
     <script>

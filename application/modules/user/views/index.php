@@ -64,9 +64,15 @@
                         <label for="role">Role</label>
                         <select name="role" id="role" class="form-control form-control-sm" required>
                             <option value="">Pilih Role</option>
-                            <?php foreach ($role as $r) { ?>
-                                <option value="<?= $r->id_role ?>"><?= $r->role ?></option>
-                            <?php } ?>
+                            <?php foreach ($role as $r) {
+                                if ($this->session->userdata('role') != 1) {
+                                    if ($r->id_role != 1) { ?>
+                                        <option value="<?= $r->id_role ?>"><?= $r->role ?></option>
+                                    <?php }
+                                } else { ?>
+                                    <option value="<?= $r->id_role ?>"><?= $r->role ?></option>
+                            <?php }
+                            } ?>
                         </select>
                     </div>
                 </div>
