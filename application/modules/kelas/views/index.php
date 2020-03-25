@@ -136,7 +136,7 @@
 		});
 		$('#data').on('click', '.siswa', function() {
 			id = $(this).data('id_kelas');
-			$('#show_data').load('<?= site_url('siswa/index/') ?>' + id);
+			$('#show_data').load('<?= site_url('siswa/kelas/') ?>' + id);
 		});
 		$('#data').on('click', '.pelajaran', function() {
 			id = $(this).data('id_kelas');
