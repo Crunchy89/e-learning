@@ -64,11 +64,19 @@ class Role_model extends CI_Model
         $role = htmlspecialchars($_POST['role']);
         $cek = $this->db->get_where($this->table, ['role' => $role])->row();
         if ($cek) {
-            return "role sudah ada";
+            $data = [
+                'status' => false,
+                'pesan' => "role sudah ada"
+            ];
+            return $data;
         }
         $this->db->set('role', $role);
         $this->db->insert($this->table);
-        return "Data Role Berhasil Ditambah";
+        $data = [
+            'status' => true,
+            'pesan' => "Role Berhasil Ditambah"
+        ];
+        return $data;
     }
     public function edit()
     {
@@ -77,13 +85,21 @@ class Role_model extends CI_Model
         $this->db->set('role', $role);
         $this->db->where($this->id, $id);
         $this->db->update($this->table);
-        return "Data Berhasil diubah";
+        $data = [
+            'status' => true,
+            'pesan' => "Data berhasil diubah"
+        ];
+        return $data;
     }
     public function hapus()
     {
         $id = htmlspecialchars($_POST['id']);
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-        return "Data Berhasil dihapus";
+        $data = [
+            'status' => true,
+            'pesan' => "Data berhasil dihapus"
+        ];
+        return $data;
     }
 }

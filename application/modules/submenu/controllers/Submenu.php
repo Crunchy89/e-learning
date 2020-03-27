@@ -47,14 +47,14 @@ class Submenu extends MY_Controller
 				$disabled = 'disabled';
 			}
 			if ($d->is_active == 1) {
-				$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
+				$active = '<input type="checkbox" ' . $disabled . ' name="active" data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" checked>';
 			} else {
-				$active = '<input type="checkbox" ' . $disabled . ' name="active" class="form-control " data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
+				$active = '<input type="checkbox" ' . $disabled . ' name="active" data-id_submenu="' . $d->id_submenu . '" data-active="' . $d->is_active . '" form-control-sm" id="active" >';
 			}
-			$order = '<button data-order="' . $d->no_urut . '" data-id_menu="' . $d->id_menu . '"  data-id_submenu="' . $d->id_submenu . '" class="btn btn-danger btn-xs down"><i class="fas fa-fw fa-arrow-down"></i></button> <button data-id_submenu="' . $d->id_submenu . '" data-order="' . $d->no_urut . '" data-id_menu="' . $d->id_menu . '" class="btn btn-success btn-xs up"><i class="fas fa-fw fa-arrow-up"></i></button>';
+			$order = '<button data-order="' . $d->no_urut . '" data-id_menu="' . $d->id_menu . '"  data-id_submenu="' . $d->id_submenu . '" class="btn btn-danger btn-xs down"><i class="fa fa-fw fa-arrow-down"></i></button> <button data-id_submenu="' . $d->id_submenu . '" data-order="' . $d->no_urut . '" data-id_menu="' . $d->id_menu . '" class="btn btn-success btn-xs up"><i class="fa fa-fw fa-arrow-up"></i></button>';
 			$icon = '<i class="' . $d->icon . '"></i>';
-			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-icon="' . $d->icon . '" data-title="' . $d->title . '" data-url="' . $d->url . '" data-id_submenu="' . $d->id_submenu . '"><i class="fas fa-fw fa-pen"></i> Edit</button>';
-			$btn_hapus = '<button ' . $disabled . ' type="button" class="btn btn-danger btn-xs hapus"  data-id_submenu="' . $d->id_submenu . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-icon="' . $d->icon . '" data-title="' . $d->title . '" data-url="' . $d->url . '" data-id_submenu="' . $d->id_submenu . '"><i class="fa fa-fw fa-edit"></i> Edit</button>';
+			$btn_hapus = '<button ' . $disabled . ' type="button" class="btn btn-danger btn-xs hapus"  data-id_submenu="' . $d->id_submenu . '"><i class="fa fa-fw fa-trash"></i> Hapus</button>';
 			$data[] = array($i, $d->title, $icon, $d->url, $order, $active, $btn_edit . ' ' . $btn_hapus);
 		}
 

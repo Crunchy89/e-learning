@@ -36,10 +36,11 @@ class Auth_model extends CI_Model
         $cek = $this->db->get_where('user', ['username' => $user])->row();
         if ($cek) {
             if ($cek->is_active == 0) {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger text-center" role="alert">
-                Akun anda belum diaktivasi silahkan hubungi admin
-              </div>');
-                redirect('auth');
+                $data = [
+                    'status' => false,
+                    'pesan' => "Akun anda belum diaktivasi silahkan hubungi admin"
+                ];
+                return $data;
             }
             if (password_verify($pass, $cek->password)) {
                 $data = [
@@ -48,19 +49,25 @@ class Auth_model extends CI_Model
                     'id' => $cek->id_user
                 ];
                 $this->session->set_userdata($data);
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success text-center" role="alert">
-                Selamat datang ' . $cek->username . ' !!!
-              </div>');
-                redirect('admin');
+                $this->session->set_flashdata('pesan', '<script>$(document).ready(function(){
+                    toastr["success"]("Selamat datang ' . $cek->username . '")
+                })</script>');
+                $data = [
+                    'status' => true,
+                    'link' => '' . site_url('admin') . ''
+                ];
+                return $data;
             }
-            $this->session->set_flashdata('pesan', '<div class="alert alert-danger text-center" role="alert">
-            Username atau Password salah !!!
-          </div>');
-            redirect('auth');
+            $data = [
+                'status' => false,
+                'pesan' => "Username atau Password salah"
+            ];
+            return $data;
         }
-        $this->session->set_flashdata('pesan', '<div class="alert alert-danger text-center" role="alert">
-        Username atau Password salah !!!
-      </div>');
-        redirect('auth');
+        $data = [
+            'status' => false,
+            'pesan' => "Username atau Password salah"
+        ];
+        return $data;
     }
 }

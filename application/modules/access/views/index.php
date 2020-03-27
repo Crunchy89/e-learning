@@ -1,24 +1,18 @@
-<div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0 text-dark"><?= $judul ?></h1>
-			</div>
-		</div>
-	</div>
-</div>
+<section class="content-header">
+	<h1>
+		<?= $judul ?>
+	</h1>
+</section>
+
 <section class="content">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card card-primary card-outline">
-					<div class="card-header">
-						<h3 class="card-title">
-							<i class="fas fa-edit"></i>
-							Access Management
-						</h3>
-					</div>
-					<div class="card-body pad table-responsive">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">Access Management</h3>
+				</div>
+				<div class="box-body">
+					<div class="table-responsive">
 						<table class="table table-bordered table-sm" id="myData" width="100%">
 							<thead class="thead-dark">
 								<tr>
@@ -49,6 +43,43 @@
 </section>
 <script>
 	$(document).ready(function() {
+		function show_data() {
+			$.ajax({
+				url: '<?= site_url('admin/menu') ?>',
+				type: 'post',
+				dataType: 'json',
+				success: function(data) {
+					var menu = ''
+					for (var i = 0; i < data.length; i++) {
+						var sub = '';
+						for (var j = 0; j < data[i].submenu.length; j++) {
+							submenu = '<li data-url="' + data[i].submenu[j].url + '" class="submenu"><a href="#"><i class="' + data[i].submenu[j].icon + '"></i> ' + data[i].submenu[j].title + '</a></li>';
+							sub += submenu;
+						}
+						menu += '<li class="treeview">' +
+							'<a href="#">' +
+							'<i class="' + data[i].icon + '"></i>' +
+							'<span>' + data[i].title + '</span>' +
+							'<span class="pull-right-container">' +
+							'<i class="fa fa-angle-left pull-right"></i>' +
+							'</span>' +
+							'</a>' +
+							'<ul class="treeview-menu submenu">' +
+							sub + '</ul>' +
+							'</li>';
+					}
+					$('#menu').html(menu);
+					$('.nav-link').click(function() {
+						$('.nav-link').removeClass('active');
+						$(this).addClass('active');
+					});
+					$('.submenu').on('click', 'li', function() {
+						url = $(this).data('url');
+						$('#show_data').load('<?= site_url() ?>' + '/' + url);
+					});
+				}
+			});
+		}
 		$('#data').on('click', '.cek', function() {
 			id_role = $(this).data('id_role');
 			id_menu = $(this).data('id_menu');
@@ -61,62 +92,15 @@
 				},
 				dataType: 'json',
 				success: function(result) {
-					
-					$.ajax({
-                url: '<?= site_url('admin/menu') ?>',
-                type: 'post',
-                dataType: 'json',
-                success: function(data) {
-                    var menu = ''
-                    for (var i = 0; i < data.length; i++) {
-                        var sub = '';
-                        for (var j = 0; j < data[i].submenu.length; j++) {
-                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
-                                '<a href="#" class="nav-link">' +
-                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
-                                '<p>' + data[i].submenu[j].title + '</p>' +
-                                '</a>' +
-                                '</li>';
-                            sub += submenu;
-                        }
-                        menu += '<li class="nav-item has-treeview">' +
-                            '<a href="#" class="nav-link">' +
-                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
-                            '<p>' +
-                            data[i].title +
-                            '<i class="right fas fa-angle-left"></i>' +
-                            '</p>' +
-                            '</a>' +
-                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
-                            '</li>';
-                    }
-                    $('#menu').html(menu);
-                    $('.nav-link').click(function() {
-                        $('.nav-link').removeClass('active');
-                        $(this).addClass('active');
-                    });
-                    $('.submenu').on('click', '.nav-item', function() {
-                        url = $(this).data('url');
-                        $('#show_data').load('<?= site_url() ?>' + '/' + url);
-                    });
-                }
-            })
-
+					show_data();
 					if (result == true) {
-						$(document).Toasts('create', {
-							title: 'Success',
-							body: 'Access Diberikan',
-							class: 'bg-success mt-4 mr-4'
-						});
+						toastr['success']('Access Diberikan')
 					} else {
-						$(document).Toasts('create', {
-							title: 'Success',
-							body: 'Access Dihapus',
-							class: 'bg-danger mt-4 mr-4'
-						});
+						toastr['error']('Access Dihapus')
 					}
+
 				}
-			})
-		})
-	})
+			});
+		});
+	});
 </script>

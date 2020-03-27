@@ -1,27 +1,21 @@
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark"><?= $judul ?></h1>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="content-header">
+    <h1>
+        <?= $judul ?>
+    </h1>
+</section>
+
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i>
-                            Menu Management
-                        </h3>
-                        <br>
-                        <hr>
-                        <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fas fa-plus"></i> Tambah</button>
-                    </div>
-                    <div class="card-body pad table-responsive">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Menu Management</h3>
+                    <br>
+                    <hr>
+                    <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fa fa-plus"></i> Tambah</button>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
                         <table class="table table-bordered table-sm" id="myData" width="100%">
                             <thead class="thead-dark">
                                 <tr>
@@ -75,7 +69,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function() {
         function show_data() {
@@ -88,23 +81,19 @@
                     for (var i = 0; i < data.length; i++) {
                         var sub = '';
                         for (var j = 0; j < data[i].submenu.length; j++) {
-                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
-                                '<a href="#" class="nav-link">' +
-                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
-                                '<p>' + data[i].submenu[j].title + '</p>' +
-                                '</a>' +
-                                '</li>';
+                            submenu = '<li data-url="' + data[i].submenu[j].url + '" class="submenu"><a href="#"><i class="' + data[i].submenu[j].icon + '"></i> ' + data[i].submenu[j].title + '</a></li>';
                             sub += submenu;
                         }
-                        menu += '<li class="nav-item has-treeview">' +
-                            '<a href="#" class="nav-link">' +
-                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
-                            '<p>' +
-                            data[i].title +
-                            '<i class="right fas fa-angle-left"></i>' +
-                            '</p>' +
+                        menu += '<li class="treeview">' +
+                            '<a href="#">' +
+                            '<i class="' + data[i].icon + '"></i>' +
+                            '<span>' + data[i].title + '</span>' +
+                            '<span class="pull-right-container">' +
+                            '<i class="fa fa-angle-left pull-right"></i>' +
+                            '</span>' +
                             '</a>' +
-                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
+                            '<ul class="treeview-menu submenu">' +
+                            sub + '</ul>' +
                             '</li>';
                     }
                     $('#menu').html(menu);
@@ -112,12 +101,12 @@
                         $('.nav-link').removeClass('active');
                         $(this).addClass('active');
                     });
-                    $('.submenu').on('click', '.nav-item', function() {
+                    $('.submenu').on('click', 'li', function() {
                         url = $(this).data('url');
                         $('#show_data').load('<?= site_url() ?>' + '/' + url);
                     });
                 }
-            })
+            });
         }
         const form = $('.modal-body').html();
         $('#myData').DataTable({
@@ -144,7 +133,7 @@
                     id_menu: id
                 },
                 dataType: 'json',
-                success: function(result) {
+                success: function() {
                     show_data();
                     $('#myData').DataTable().ajax.reload();
                 }
@@ -161,7 +150,7 @@
                     id_menu: id
                 },
                 dataType: 'json',
-                success: function(result) {
+                success: function() {
                     show_data();
                     $('#myData').DataTable().ajax.reload();
                 }
@@ -211,17 +200,17 @@
                 url: '<?= site_url('menu/aksi') ?>',
                 type: 'post',
                 data: new FormData(this),
+                dataType: 'json',
                 processData: false,
                 contentType: false,
                 async: false,
-                success: function(data) {
+                success: function(result) {
                     show_data();
-                    var pesan = data;
-                    $(document).Toasts('create', {
-                        title: 'Success',
-                        body: pesan,
-                        class: 'bg-success mt-4 mr-4'
-                    });
+                    if (result.status == false) {
+                        toastr['error'](result.pesan);
+                    } else if (result.status == true) {
+                        toastr['success'](result.pesan);
+                    }
                     $('#myData').DataTable().ajax.reload();
                     $('#modal').modal('hide');
                 }
@@ -242,17 +231,9 @@
                     show_data();
                     $('#myData').DataTable().ajax.reload();
                     if (data.active == 'true') {
-                        $(document).Toasts('create', {
-                            title: 'Success',
-                            body: 'Menu Aktif',
-                            class: 'bg-success mt-4 mr-4'
-                        });
+                        toastr['success']('Menu Aktif')
                     } else {
-                        $(document).Toasts('create', {
-                            title: 'Success',
-                            body: 'Menu Nonaktif',
-                            class: 'bg-danger mt-4 mr-4'
-                        });
+                        toastr['error']('Menu Nonaktif')
                     }
                 }
             })

@@ -1,30 +1,24 @@
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark"><?= $judul ?> <?= $title ?></h1>
-                <input type="hidden" name="id_menu" id="id_menu" value="<?= $id ?>">
-            </div>
-        </div>
-    </div>
-</div>
+<section class="content-header">
+    <h1>
+        <?= $judul . ' ' . $title ?>
+        <input type="hidden" name="id_menu" id="id_menu" value="<?= $id ?>">
+    </h1>
+</section>
+
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i>
-                            Submenu Management
-                        </h3>
-                        <br>
-                        <hr>
-                        <button type="button" class="btn btn-info btn-sm" id="kembali"><i class="fas fa-arrow-left"></i> Kembali</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="reload"><i class="fas fa-sync-alt"></i> Refresh</button>
-                        <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fas fa-plus"></i> Tambah</button>
-                    </div>
-                    <div class="card-body pad table-responsive">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Submenu Management</h3>
+                    <br>
+                    <hr>
+                    <button type="button" class="btn btn-info btn-sm" id="kembali"><i class="fa fa-arrow-left"></i> Kembali</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="reload"><i class="fa fa-sync-alt"></i> Refresh</button>
+                    <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fa fa-plus"></i> Tambah</button>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
                         <table class="table table-bordered table-sm" id="myData" width="100%">
                             <thead class="thead-dark">
                                 <tr>
@@ -46,6 +40,8 @@
         </div>
     </div>
 </section>
+
+
 
 <!-- modal -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -95,23 +91,19 @@
                     for (var i = 0; i < data.length; i++) {
                         var sub = '';
                         for (var j = 0; j < data[i].submenu.length; j++) {
-                            submenu = '<li class="nav-item" data-url="' + data[i].submenu[j].url + '">' +
-                                '<a href="#" class="nav-link">' +
-                                '<i class="' + data[i].submenu[j].icon + ' nav-icon"></i>' +
-                                '<p>' + data[i].submenu[j].title + '</p>' +
-                                '</a>' +
-                                '</li>';
+                            submenu = '<li data-url="' + data[i].submenu[j].url + '" class="submenu"><a href="#"><i class="' + data[i].submenu[j].icon + '"></i> ' + data[i].submenu[j].title + '</a></li>';
                             sub += submenu;
                         }
-                        menu += '<li class="nav-item has-treeview">' +
-                            '<a href="#" class="nav-link">' +
-                            '<i class="nav-icon ' + data[i].icon + '"></i>' +
-                            '<p>' +
-                            data[i].title +
-                            '<i class="right fas fa-angle-left"></i>' +
-                            '</p>' +
+                        menu += '<li class="treeview">' +
+                            '<a href="#">' +
+                            '<i class="' + data[i].icon + '"></i>' +
+                            '<span>' + data[i].title + '</span>' +
+                            '<span class="pull-right-container">' +
+                            '<i class="fa fa-angle-left pull-right"></i>' +
+                            '</span>' +
                             '</a>' +
-                            '<ul class="nav nav-treeview submenu" >' + sub + '</ul>' +
+                            '<ul class="treeview-menu submenu">' +
+                            sub + '</ul>' +
                             '</li>';
                     }
                     $('#menu').html(menu);
@@ -119,12 +111,12 @@
                         $('.nav-link').removeClass('active');
                         $(this).addClass('active');
                     });
-                    $('.submenu').on('click', '.nav-item', function() {
+                    $('.submenu').on('click', 'li', function() {
                         url = $(this).data('url');
                         $('#show_data').load('<?= site_url() ?>' + '/' + url);
                     });
                 }
-            })
+            });
         }
         const form = $('.modal-body').html();
         id_menu = $('#id_menu').val();
@@ -192,17 +184,13 @@
                 url: '<?= site_url('submenu/aksi') ?>',
                 type: 'post',
                 data: new FormData(this),
+                dataType: 'json',
                 processData: false,
                 contentType: false,
                 async: false,
                 success: function(data) {
                     show_data();
-                    var pesan = data;
-                    $(document).Toasts('create', {
-                        title: 'Success',
-                        body: pesan,
-                        class: 'bg-success mt-4 mr-4'
-                    });
+                    toastr['success'](data);
                     $('#myData').DataTable().ajax.reload();
                     $('#modal').modal('hide');
                 }
@@ -223,17 +211,10 @@
                     show_data();
                     $('#myData').DataTable().ajax.reload();
                     if (data.active == 'true') {
-                        $(document).Toasts('create', {
-                            title: 'Success',
-                            body: 'Submenu Aktif',
-                            class: 'bg-success mt-4 mr-4'
-                        });
+                        toastr['success']("Submenu Aktif");
                     } else {
-                        $(document).Toasts('create', {
-                            title: 'Success',
-                            body: 'Submenu Nonaktif',
-                            class: 'bg-danger mt-4 mr-4'
-                        });
+                        toastr['error']("Submenu Nonaktif");
+
                     }
                 }
             })
@@ -258,7 +239,7 @@
                     id_submenu: id_sub
                 },
                 dataType: 'json',
-                success: function(result) {
+                success: function() {
                     show_data();
                     $('#myData').DataTable().ajax.reload();
                 }
@@ -277,7 +258,7 @@
                     id_submenu: id_sub
                 },
                 dataType: 'json',
-                success: function(result) {
+                success: function() {
                     show_data();
                     $('#myData').DataTable().ajax.reload();
                 }

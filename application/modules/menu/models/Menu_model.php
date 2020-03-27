@@ -71,7 +71,11 @@ class Menu_model extends CI_Model
             'no_order' => $hitung
         ];
         $this->db->insert($this->table, $data);
-        return "Data Menu Berhasil Ditambah";
+        $data = [
+            'status' => true,
+            'pesan' => "Data Menu Berhasil Ditambah"
+        ];
+        return $data;
     }
     public function edit()
     {
@@ -84,14 +88,22 @@ class Menu_model extends CI_Model
         ];
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
-        return "Data Berhasil diubah";
+        $data = [
+            'status' => true,
+            'pesan' => "Data Menu Berhasil Diubah"
+        ];
+        return $data;
     }
     public function hapus()
     {
         $id = htmlspecialchars($_POST['id']);
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-        return "Data Berhasil dihapus";
+        $data = [
+            'status' => true,
+            'pesan' => "Data Menu Berhasil Dihapus"
+        ];
+        return $data;
     }
     public function active()
     {
@@ -118,7 +130,7 @@ class Menu_model extends CI_Model
             $this->db->set('no_order', $order + 1);
             $this->db->where($this->id, $id_menu);
             $this->db->update($this->table);
-            if($up){
+            if ($up) {
                 $this->db->set('no_order', $up->no_order - 1);
                 $this->db->where($this->id, $up->id_menu);
                 $this->db->update($this->table);
@@ -136,7 +148,7 @@ class Menu_model extends CI_Model
             $this->db->set('no_order', $order - 1);
             $this->db->where($this->id, $id_menu);
             $this->db->update($this->table);
-            if($up){
+            if ($up) {
                 $this->db->set('no_order', $up->no_order + 1);
                 $this->db->where($this->id, $up->id_menu);
                 $this->db->update($this->table);

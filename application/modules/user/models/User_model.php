@@ -67,13 +67,13 @@ class User_model extends CI_Model
         $active = $this->input->post('active');
         if ($active == 1) {
             $this->db->set('is_active', 0);
-            $data['active'] = 'false';
+            $data = false;
         } else {
             $this->db->set('is_active', 1);
-            $data['active'] = 'true';
+            $data = true;
         }
         $this->db->where($this->id, $id);
-        $data['data'] = $this->db->update($this->table);
+        $this->db->update($this->table);
         return $data;
     }
     public function reset()
@@ -85,7 +85,10 @@ class User_model extends CI_Model
         ];
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
-        $hasil = "Password Berhasil di reset";
+        $hasil = [
+            'status' => true,
+            'pesan' => "Password Berhasil di reset"
+        ];
         return $hasil;
     }
     public function tambah()
@@ -95,7 +98,9 @@ class User_model extends CI_Model
         $pass = htmlspecialchars($_POST['pass']);
         $cek = $this->db->get_where('user', ['username' => $user])->row();
         if ($cek) {
-            return false;
+            $hasil['status'] = false;
+            $hasil['pesan'] = "Username sudah Terpakai";
+            return $hasil;
         }
         $data = [
             'username' => $user,
@@ -104,7 +109,9 @@ class User_model extends CI_Model
             'is_active' => 1
         ];
         $this->db->insert('user', $data);
-        return "User berhasil ditambah";
+        $hasil['status'] = true;
+        $hasil['pesan'] = "User berhasil ditambahkan";
+        return $hasil;
     }
     public function edit()
     {
@@ -115,20 +122,26 @@ class User_model extends CI_Model
         if ($cek->username != $user) {
             $cek2 = $this->db->get_where($this->table, ['username' => $user])->row();
             if ($cek2) {
-                return "Username sudah terpakai";
+                $hasil['status'] = false;
+                $hasil['pesan'] = "Username sudah terpakai";
+                return $hasil;
             }
             $this->db->set('username', $user);
         }
         $this->db->set('id_role', $id_role);
         $this->db->where($this->id, $id);
         $this->db->update($this->table);
-        return "Data Berhasil diubah";
+        $hasil['status'] = true;
+        $hasil['pesan'] = "User berhasil diubah";
+        return $hasil;
     }
     public function hapus()
     {
         $id = htmlspecialchars($_POST['id']);
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-        return "User Berhasil di hapus";
+        $hasil['status'] = true;
+        $hasil['pesan'] = "User berhasil dihapus";
+        return $hasil;
     }
 }
