@@ -16,7 +16,8 @@ class Admin extends MY_Controller
 	public function index()
 	{
 		$data = [
-			'title' => "Admin Page"
+			'title' => "Admin Page",
+			'profile' => $this->db->get_where('sekolah', ['id_sekolah' => 1])->row()
 		];
 		admin('index', $data);
 	}

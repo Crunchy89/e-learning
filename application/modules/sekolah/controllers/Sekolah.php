@@ -41,4 +41,9 @@ class Sekolah extends MY_Controller
 		$data = $this->model->getMedsos();
 		echo json_encode($data);
 	}
+	public function update()
+	{
+		$data = $this->model->update();
+		echo json_encode($data);
+	}
 }

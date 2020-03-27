@@ -34,8 +34,6 @@ class Role extends MY_Controller
 	function getLists()
 	{
 		$data = array();
-
-		// Fetch member's records
 		$role = $this->model->getRows($_POST);
 
 		$i = $_POST['start'];

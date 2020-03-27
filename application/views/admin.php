@@ -24,8 +24,8 @@
 
         <header class="main-header">
             <a href="#" class="logo">
-                <span class="logo-mini"><img class="user-image" src="<?= base_url() ?>assets/img/logo.png" width="40px" height="40px" alt="Logo"></span>
-                <span class="logo-lg"><img class="user-image" src="<?= base_url() ?>assets/img/logo.png" width="40px" height="40px" alt="Logo"></span>
+                <span class="logo-mini LOGO"><img class="user-image" src="<?= base_url() ?>assets/img/profile/<?= $profile->logo ?>" width="40px" height="40px" alt="Logo"></span>
+                <span class="logo-lg LOGO"><img class="user-image" src="<?= base_url() ?>assets/img/profile/<?= $profile->logo ?>" width="40px" height="40px" alt="Logo"></span>
             </a>
             <nav class="navbar navbar-static-top">
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">

@@ -12,26 +12,7 @@
 			<!-- Profile Image -->
 			<div class="box box-primary">
 				<div class="box-body box-profile" id="pro">
-					<img class="profile-user-img img-responsive img-circle logo" id="logo" src="<?= base_url() ?>assets/img/logo.png" alt="Logo Sekolah">
 
-					<p class="profile-username text-center nama">SMK Alhasanain NU Beraim</p>
-
-					<p class="text-muted text-center alamat">Jln. ahmad yani no 5 beraim</p>
-
-					<ul class="list-group list-group-unbordered">
-						<li class="list-group-item">
-							<b>Guru</b> <a class="pull-right">543</a>
-						</li>
-						<li class="list-group-item">
-							<b>Siswa</b> <a class="pull-right">1,322</a>
-						</li>
-					</ul>
-					<div class="text-center" id="sosial">
-						<a href="" class="btn btn-social-icon btn-facebook"><i class="fa fa-fw fa-facebook-f"></i></a>
-						<a href="" class="btn btn-social-icon btn-danger"><i class="fa fa-fw fa-youtube-play"></i></a>
-						<a href="" class="btn btn-social-icon btn-success"><i class="fa fa-fw fa-whatsapp"></i></a>
-						<a href="" class="btn btn-social-icon btn-warning"><i class="fa fa-fw fa-instagram"></i></a>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -90,16 +71,15 @@
 						</form>
 					</div>
 					<div class=" tab-pane" id="medsos">
-						<button type="button" class="btn btn-primary">Tambah</button>
+						<button type="button" id="tambah" class="btn btn-primary">Tambah</button>
 						<hr>
 						<div class="table-responsive">
 							<table class="table table-bordered table-sm" id="myData" width="100%">
 								<thead class="thead-dark">
 									<tr>
-										<th><input type="checkbox" id="checklist"></th>
+										<th>No</th>
 										<th>Url</th>
 										<th>Icon</th>
-										<th>Warna</th>
 										<th>Aksi</th>
 									</tr>
 								</thead>
@@ -109,10 +89,11 @@
 						</div>
 					</div>
 					<div class="tab-pane" id="settings">
-						<form id="profil" method="post" class="form-horizontal">
+						<form id="profil" action="#" method="post" class="form-horizontal">
 							<div class="form-group">
 								<label for="nama" class="col-sm-2 control-label">Nama Sekolah</label>
 								<div class="col-sm-10">
+									<input type="hidden" name="gambarLama">
 									<input type="text" name="nama" id="nama" class="form-control" required>
 								</div>
 							</div>
@@ -143,11 +124,62 @@
 									</div>
 								</div>
 							</div>
-							<button type="submit" class="btn btn-success"><i class="fa fa-fw fa-save"></i> Simpan</button>
+							<button type="submit" id="save" class="btn btn-success"><i class="fa fa-fw fa-save"></i> Simpan</button>
 							<button type="button" id="btn-reset" class="btn btn-primary"><i class="fa fa-fw fa-refresh"></i> Reset</button>
 						</form>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal -->
+	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Tambah</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form id="form">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="link">Link</label>
+							<input type="text" name="link" id="link" class="form-control form-control-sm" placeholder="masukkan Link" required>
+						</div>
+						<div class="form-group">
+							<label for="icon">Icon</label>
+							<select name="icon" id="icon" class="form-control" required>
+								<option value="">Pilih Icon</option>
+								<option value="fa fa-fw fa-facebook">Facebook</option>
+								<option value="fa fa-fw fa-instagram">Instagram</option>
+								<option value="fa fa-fw fa-twitter">Twitter</option>
+								<option value="fa fa-fw fa-youtube-play">Youtube</option>
+								<option value="fa fa-fw fa-whatsapp">Whatsapp</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="warna">Warna</label>
+							<select name="warna" id="warna" class="form-control" required>
+								<option value="">Pilih Icon</option>
+								<option value="btn-success">Hijau</option>
+								<option value="btn-primary">Biru</option>
+								<option value="btn-info">Biru Langit</option>
+								<option value="btn-danger">Merah</option>
+								<option value="btn-warning">Orange</option>
+								<option value="btn-secondary">Hitam</option>
+							</select>
+						</div>
+						<div id="add">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						<button type="submit" class="btn btn-primary" id="btn">Tambah</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -160,6 +192,7 @@
 	};
 	$(document).ready(function() {
 		show_data()
+		const form = $('.modal-body').html();
 
 		function show_data() {
 			$.ajax({
@@ -168,9 +201,112 @@
 				dataType: 'json',
 				success: function(result) {
 					$('[name="nama"]').val(result.nama);
+					$('[name="gambarLama"]').val(result.logo);
 					$('[name="no"]').val(result.nohp);
 					$('[name="alamat"]').val(result.alamat);
 					$('#reset').html('<img src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah" id="output" width="200px" height="200px">');
+					var med = '';
+					var sub = '';
+					$.ajax({
+						url: '<?= site_url('sekolah/getMedsos') ?>',
+						type: 'POST',
+						dataType: 'json',
+						success: function(medsos) {
+							for (var i = 0; i < medsos.length; i++) {
+								med += '<a href="' + medsos[i].link + '" class="btn btn-social-icon ' + medsos[i].warna + '"><i class="' + medsos[i].icon + '"></i></a> ';
+							}
+							sub = med;
+							html = '<img class="profile-user-img img-responsive img-circle logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
+								'<p class="profile-username text-center nama">' + result.nama + '</p>' +
+								'<p class="text-muted text-center alamat">' + result.alamat + '</p>' +
+								'<ul class="list-group list-group-unbordered">' +
+								'<li class="list-group-item" id="guru">' +
+								'<b>Guru</b> <a class="pull-right">543</a>' +
+								'</li>' +
+								'<li class="list-group-item">' +
+								'<b>Siswa</b> <a class="pull-right">1,322</a>' +
+								'</li>' +
+								'</ul>' +
+								'<div class="text-center" id="sosial">' +
+								sub +
+								'</div>';
+							$('#pro').html(html);
+						}
+					})
+				}
+			})
+		}
+		$('#myData').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"order": [],
+			"ajax": {
+				"url": "<?= site_url('medsos/getLists'); ?>",
+				"type": "POST"
+			},
+			"columnDefs": [{
+				"targets": [0],
+				"orderable": false
+			}]
+		});
+		$('#tambah').click(function() {
+			$('.modal-body').html(form);
+			aksi = '<input type="hidden" name="aksi" id="aksi">';
+			$('#add').html(aksi);
+			$('#modal').find('h5').html('Tambah')
+			$('#modal').find('#btn').html('Tambah')
+			$('#aksi').val('tambah');
+			$('#modal').modal('show');
+		});
+		$('#data').on('click', '.edit', function() {
+			$('.modal-body').html(form);
+			aksi = '<input type="hidden" name="aksi" id="aksi">' +
+				'<input type="hidden" name="id" id="id">';
+			$('#add').html(aksi);
+			$('#modal').find('h5').html('Edit')
+			$('#modal').find('#btn').html('Edit')
+			id = $(this).data('id');
+			icon = $(this).data('icon');
+			link = $(this).data('link');
+			warna = $(this).data('warna');
+			$('#aksi').val('edit');
+			$('#id').val(id);
+			$('#icon').val(icon);
+			$('#link').val(link);
+			$('#warna').val(warna);
+			$('#modal').modal('show');
+		});
+		$('#data').on('click', '.hapus', function() {
+			$('.modal-body').html(form);
+			aksi = '<input type="hidden" name="aksi" id="aksi">' +
+				'<input type="hidden" name="id" id="id">' +
+				'<h3>Apakah Anda Yakin ?</h3>';
+			$('.modal-body').html(aksi);
+			$('#modal').find('h5').html('Hapus')
+			$('#modal').find('#btn').html('Hapus')
+			id = $(this).data('id');
+			$('#aksi').val('hapus');
+			$('#id').val(id);
+			$('#modal').modal('show');
+		});
+		$('#form').submit(function(e) {
+			e.preventDefault();
+			$.ajax({
+				url: '<?= site_url('medsos/aksi') ?>',
+				type: 'post',
+				data: new FormData(this),
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				async: false,
+				success: function(result) {
+					if (result.status == true) {
+						toastr["success"](result.pesan);
+					} else {
+						toastr["error"](result.pesan);
+					}
+					$('#myData').DataTable().ajax.reload();
+					$('#modal').modal('hide');
 					var med = '';
 					$.ajax({
 						url: '<?= site_url('sekolah/getMedsos') ?>',
@@ -181,30 +317,17 @@
 								med += '<a href="' + medsos[i].link + '" class="btn btn-social-icon ' + medsos[i].warna + '"><i class="' + medsos[i].icon + '"></i></a> ';
 							}
 							sub = med;
+							$('#sosial').html(sub);
 						}
 					})
-					html = '<img class="profile-user-img img-responsive img-circle logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
-						'<p class="profile-username text-center nama">' + result.nama + '</p>' +
-						'<p class="text-muted text-center alamat">' + result.alamat + '</p>' +
-						'<ul class="list-group list-group-unbordered">' +
-						'<li class="list-group-item" id="guru">' +
-						'<b>Guru</b> <a class="pull-right">543</a>' +
-						'</li>' +
-						'<li class="list-group-item">' +
-						'<b>Siswa</b> <a class="pull-right">1,322</a>' +
-						'</li>' +
-						'</ul>' +
-						'<div class="text-center" id="sosial">' +
-						sub +
-						'</div>';
-					$('#pro').html(html);
 				}
 			})
-		}
+		})
 		$('#btn-reset').click(function() {
 			show_data();
 		});
-		$('profil').submit(function() {
+		$('#profil').submit(function(e) {
+			e.preventDefault();
 			$.ajax({
 				url: '<?= site_url('sekolah/update') ?>',
 				type: 'POST',
@@ -213,8 +336,50 @@
 				contentType: false,
 				processData: false,
 				async: false,
-				success: function(result) {
-
+				success: function(hasil) {
+					toastr['success'](hasil.pesan);
+					$.ajax({
+						url: '<?= site_url('sekolah/getProfile') ?>',
+						type: 'POST',
+						dataType: 'json',
+						success: function(result) {
+							$('[name="nama"]').val(result.nama);
+							$('[name="gambarLama"]').val(result.logo);
+							$('[name="no"]').val(result.nohp);
+							$('[name="alamat"]').val(result.alamat);
+							$('#reset').html('<img src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah" id="output" width="200px" height="200px">');
+							$('.LOGO').html('<img class="user-image" src="<?= base_url() ?>assets/img/profile/' + result.logo +
+								'" width="40px" height="40px" alt="Logo">');
+							var med = '';
+							var sub = '';
+							$.ajax({
+								url: '<?= site_url('sekolah/getMedsos') ?>',
+								type: 'POST',
+								dataType: 'json',
+								success: function(medsos) {
+									for (var i = 0; i < medsos.length; i++) {
+										med += '<a href="' + medsos[i].link + '" class="btn btn-social-icon ' + medsos[i].warna + '"><i class="' + medsos[i].icon + '"></i></a> ';
+									}
+									sub = med;
+									html = '<img class="profile-user-img img-responsive img-circle logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
+										'<p class="profile-username text-center nama">' + result.nama + '</p>' +
+										'<p class="text-muted text-center alamat">' + result.alamat + '</p>' +
+										'<ul class="list-group list-group-unbordered">' +
+										'<li class="list-group-item" id="guru">' +
+										'<b>Guru</b> <a class="pull-right">543</a>' +
+										'</li>' +
+										'<li class="list-group-item">' +
+										'<b>Siswa</b> <a class="pull-right">1,322</a>' +
+										'</li>' +
+										'</ul>' +
+										'<div class="text-center" id="sosial">' +
+										sub +
+										'</div>';
+									$('#pro').html(html);
+								}
+							})
+						}
+					})
 				}
 			})
 		})
