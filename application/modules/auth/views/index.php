@@ -4,7 +4,7 @@
 	</div>
 	<h3 class="text-center"><?= $sekolah->nama ?></h3>
 	<p class="text-center"><?= $sekolah->alamat ?></p>
-	<p class="text-center"> No Telepon : <?= $sekolah->nohp ?></p>
+	<p class="text-center"><small> No Telepon : <?= $sekolah->nohp ?></small></p>
 	<div class="login-box-body">
 		<p class="login-box-msg">Silahkan Login</p>
 		<form id="login" method="POST">
@@ -17,14 +17,15 @@
 				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 			</div>
 			<div class="form-group">
-				<button type="button" class="btn btn-primary btn-block btn-flat login">Login</button>
+				<button type="submit" class="btn btn-primary btn-block btn-flat login">Login</button>
 			</div>
 		</form>
 	</div>
 </div>
 <script>
 	$(document).ready(function() {
-		$('.login').click(function() {
+		$('#login').submit(function(e) {
+			e.preventDefault();
 			user = $('#user').val();
 			pass = $('#pass').val();
 			if (user == '') {
@@ -47,8 +48,11 @@
 				$.ajax({
 					url: '<?= site_url('auth/login') ?>',
 					type: 'POST',
-					data: $('#login').serialize(),
+					data: new FormData(this),
 					dataType: 'json',
+					processData:false,
+					contentType:false,
+					async:false,
 					success: function(result) {
 						if (result.status == false) {
 							toastr["error"](result.pesan);

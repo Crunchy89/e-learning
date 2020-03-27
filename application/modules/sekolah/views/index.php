@@ -163,13 +163,12 @@
 						<div class="form-group">
 							<label for="warna">Warna</label>
 							<select name="warna" id="warna" class="form-control" required>
-								<option value="">Pilih Icon</option>
+								<option value="">Pilih Warna</option>
 								<option value="btn-success">Hijau</option>
 								<option value="btn-primary">Biru</option>
 								<option value="btn-info">Biru Langit</option>
 								<option value="btn-danger">Merah</option>
 								<option value="btn-warning">Orange</option>
-								<option value="btn-secondary">Hitam</option>
 							</select>
 						</div>
 						<div id="add">
@@ -216,7 +215,7 @@
 								med += '<a href="' + medsos[i].link + '" class="btn btn-social-icon ' + medsos[i].warna + '"><i class="' + medsos[i].icon + '"></i></a> ';
 							}
 							sub = med;
-							html = '<img class="profile-user-img img-responsive img-circle logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
+							html = '<img class="profile-user-img img-responsive logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
 								'<p class="profile-username text-center nama">' + result.nama + '</p>' +
 								'<p class="text-muted text-center alamat">' + result.alamat + '</p>' +
 								'<ul class="list-group list-group-unbordered">' +
@@ -361,7 +360,7 @@
 										med += '<a href="' + medsos[i].link + '" class="btn btn-social-icon ' + medsos[i].warna + '"><i class="' + medsos[i].icon + '"></i></a> ';
 									}
 									sub = med;
-									html = '<img class="profile-user-img img-responsive img-circle logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
+									html = '<img class="profile-user-img img-responsive logo" id="logo" src="<?= base_url() ?>assets/img/profile/' + result.logo + '" alt="Logo Sekolah">' +
 										'<p class="profile-username text-center nama">' + result.nama + '</p>' +
 										'<p class="text-muted text-center alamat">' + result.alamat + '</p>' +
 										'<ul class="list-group list-group-unbordered">' +

@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/bower_components/Ionicons/css/ionicons.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>assets/plugins/iCheck/square/blue.css">
     <script src="<?= base_url() ?>assets/bower_components/jquery/jquery.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="stylesheet" href="<?= base_url() ?>assets/bower_components/toastr/toastr.min.css">
@@ -21,7 +20,6 @@
 
     <script src="<?= base_url() ?>assets/bower_components/toastr/toastr.min.js"></script>
     <script src="<?= base_url() ?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/iCheck/icheck.min.js"></script>
 </body>
 <script>
     toastr.options = {

@@ -5,6 +5,20 @@ class Jurusan extends MY_Controller
 {
 	public function __construct()
 	{
+		if (!$this->session->userdata('role')) {
+			redirect('auth');
+		}
+		if ($this->session->userdata('role')) {
+			$this->db->select('*');
+			$this->db->from('user_access');
+			$this->db->join('user_submenu', 'user_access.id_menu=user_submenu.id_menu', 'inner');
+			$this->db->where('user_access.id_role', $this->session->userdata('role'));
+			$this->db->where('user_submenu.url', 'jurusan');
+			$access = $this->db->get()->result();
+			if (!$access) {
+				redirect('page');
+			}
+		}
 		parent::__construct();
 		$this->load->model('jurusan_model', 'model');
 	}
@@ -25,8 +39,8 @@ class Jurusan extends MY_Controller
 		foreach ($jurusan as $d) {
 			$i++;
 			$jurusan = "data-jurusan='" . $d->jurusan . "'";
-			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-id="' . $d->id_jurusan . '" ' . $jurusan . ' ><i class="fas fa-fw fa-pen"></i> Edit</button>';
-			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id="' . $d->id_jurusan . '"><i class="fas fa-fw fa-trash"></i> Hapus</button>';
+			$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-id="' . $d->id_jurusan . '" ' . $jurusan . ' ><i class="fa fa-fw fa-edit"></i> Edit</button>';
+			$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id="' . $d->id_jurusan . '"><i class="fa fa-fw fa-trash"></i> Hapus</button>';
 			$data[] = array($i, $d->jurusan, $btn_edit . ' ' . $btn_hapus);
 		}
 

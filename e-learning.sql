@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 24, 2020 at 10:10 AM
+-- Generation Time: Mar 28, 2020 at 12:17 AM
 -- Server version: 5.7.29-0ubuntu0.18.04.1
 -- PHP Version: 7.2.24-0ubuntu0.18.04.3
 
@@ -65,6 +65,29 @@ INSERT INTO `kelas` (`id_kelas`, `id_jurusan`, `kelas`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `medsos`
+--
+
+CREATE TABLE `medsos` (
+  `id_medsos` int(11) NOT NULL,
+  `icon` varchar(50) NOT NULL,
+  `warna` varchar(50) NOT NULL,
+  `link` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `medsos`
+--
+
+INSERT INTO `medsos` (`id_medsos`, `icon`, `warna`, `link`) VALUES
+(1, 'fa fa-fw fa-facebook', 'btn-primary', '#'),
+(2, 'fa fa-fw fa-instagram', 'btn-warning', '#'),
+(3, 'fa fa-fw fa-youtube-play', 'btn-danger', '#'),
+(5, 'fa fa-fw fa-twitter', 'btn-info', '#');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pelajaran`
 --
 
@@ -74,6 +97,27 @@ CREATE TABLE `pelajaran` (
   `id_guru` int(11) NOT NULL,
   `pelajaran` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sekolah`
+--
+
+CREATE TABLE `sekolah` (
+  `id_sekolah` int(11) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `nohp` varchar(15) NOT NULL,
+  `alamat` text NOT NULL,
+  `logo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sekolah`
+--
+
+INSERT INTO `sekolah` (`id_sekolah`, `nama`, `nohp`, `alamat`, `logo`) VALUES
+(1, 'SMK Al-Hasanain NU Beraim', '087849910278', 'Jln. Ahmad Yani no. 5 Beraim Praya Tengah', 'LOGO_STMIK_LOMBOK.png');
 
 -- --------------------------------------------------------
 
@@ -95,8 +139,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `id_role`, `is_active`) VALUES
 (1, 'Admin', '$2y$10$qzUVAmoXQZcpo6iNjjaKdOWXIFZq7GI/8zoorTahkgaDFqzl5Z76C', 1, 1),
-(3, 'Ferdy', '$2y$10$Dw3JI3DAqnjRWzj7FQW.X.j.TuhCD8Do7HOhHfl9x8WCw1sF6AdrW', 6, 1),
-(4, 'Icha', '$2y$10$YL.K0cQ7rMtQ3SWkUPgh7elOtsIO99OfJ2kay3H9KaOcE3Ja1QPVq', 5, 1);
+(3, 'operator', '$2y$10$F5pUHN2K2XNM5Ys351.c0.Te6TQFDEXzFL1ET/8g0Tcu3PIQflYQi', 6, 1),
+(4, 'TU', '$2y$10$lJnNBtphBP8ZNqgd7AZVM..7bAoSklBJYpSmaW4jTP0v3QFrP6cK2', 5, 1),
+(5, 'guru', '$2y$10$PV9PwxVePrhx.ZdowFRZQOG.vCXUVUC7VAMXT3o.J280XA6ik420K', 2, 1),
+(6, 'siswa', '$2y$10$WxGq9hpPwRgMrfgwKAq9/.9FMvni6nPbC8E9V1mLR9xnW/bLl4ugS', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -117,7 +163,6 @@ CREATE TABLE `user_access` (
 INSERT INTO `user_access` (`id_access`, `id_menu`, `id_role`) VALUES
 (1, 1, 1),
 (19, 2, 2),
-(35, 2, 1),
 (40, 6, 1),
 (43, 7, 1),
 (44, 7, 4),
@@ -127,11 +172,11 @@ INSERT INTO `user_access` (`id_access`, `id_menu`, `id_role`) VALUES
 (54, 6, 5),
 (55, 2, 5),
 (56, 8, 5),
-(58, 2, 6),
 (59, 6, 6),
-(60, 8, 6),
 (61, 9, 6),
-(62, 9, 1);
+(62, 9, 1),
+(64, 2, 6),
+(65, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -152,12 +197,12 @@ CREATE TABLE `user_menu` (
 --
 
 INSERT INTO `user_menu` (`id_menu`, `title`, `icon`, `is_active`, `no_order`) VALUES
-(1, 'Admin Menu', 'fas fa-fw fa-laptop', 1, 2),
-(2, 'Menu Guru', 'fas fa-fw fa-user-graduate', 1, 5),
-(6, 'Dashboard', 'fas fa-fw fa-tachometer-alt', 1, 1),
-(7, 'Menu Siswa', 'fas fa-fw fa-users', 1, 6),
-(8, 'Menu TU', 'fas fa-fw fa-cogs', 1, 4),
-(9, 'Menu Operator', 'fas fa-fw fa-laptop', 1, 3);
+(1, 'Admin Menu', 'fa fa-laptop', 1, 2),
+(2, 'Menu Guru', 'fa fa-fw fa-mortar-board', 1, 5),
+(6, 'Dashboard', 'fa fa-home', 1, 1),
+(7, 'Menu Siswa', 'fa fa-fw fa-users', 1, 6),
+(8, 'Menu TU', 'fa fa-fw fa-cogs', 1, 4),
+(9, 'Menu Operator', 'fa fa-fw  fa-folder-open', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -202,23 +247,27 @@ CREATE TABLE `user_submenu` (
 --
 
 INSERT INTO `user_submenu` (`id_submenu`, `id_menu`, `title`, `icon`, `url`, `is_active`, `no_urut`) VALUES
-(1, 1, 'User Management', 'fas fa-fw fa-users', 'user', 1, 2),
-(2, 1, 'Role management', 'fas fa-fw fa-cogs', 'role', 1, 1),
-(3, 1, 'Menu Management', 'fas fa-fw fa-code', 'menu', 1, 3),
-(6, 1, 'Access Management', 'fas fa-fw fa-lock-open', 'access', 1, 4),
-(7, 2, 'Upload Materi', 'fas fa-fw fa-book-open', 'uploadmateri', 1, 1),
-(12, 6, 'Dashboard', 'fas fa-fw fa-tachometer-alt', 'admin/dashboard', 1, 1),
-(22, 2, 'Buat Tugas', 'fas fa-fw fa-book', 'downloadtugas', 1, 2),
-(23, 7, 'Download Materi', 'fas fa-fw fa-book-open', 'downloadmateri', 1, 1),
-(24, 7, 'Upload Tugas', 'fas fa-fw fa-book', 'uploadtugas', 1, 2),
-(25, 8, 'Data Guru', 'fas fa-fw fa-user-graduate', 'guru', 1, 1),
-(26, 8, 'Data Kelas', 'fas fa-fw fa-school', 'kelas', 1, 3),
-(27, 9, 'Daftar Jurusan', 'fas fa-fw fa-list', 'jurusan', 1, 4),
-(29, 9, 'Daftar Pengguna', 'fas fa-fw fa-users', 'user', 1, 2),
-(30, 9, 'Daftar Kelas', 'fas fa-fw fa-school', 'kelas', 1, 5),
-(33, 9, 'Daftar Akses', 'fas fa-fw fa-lock-open', 'role', 1, 1),
-(34, 9, 'Hak Akses', 'fas fa-fw fa-lock-open', 'access', 1, 3),
-(35, 8, 'Data Siswa', 'fas fa-fw fa-user', 'siswa', 1, 2);
+(1, 1, 'User Management', 'fa fa-fw fa-users', 'user', 1, 2),
+(2, 1, 'Role management', 'fa fa-fw fa-cogs', 'role', 1, 1),
+(3, 1, 'Menu Management', 'fa fa-fw fa-code', 'menu', 1, 3),
+(6, 1, 'Access Management', 'fa fa-fw fa-lock', 'access', 1, 4),
+(7, 2, 'Upload Materi', 'fa fa-fw fa-cloud-upload', 'uploadmateri', 1, 1),
+(12, 6, 'Dashboard', 'fa fa-fw fa-tachometer', 'admin/dashboard', 1, 1),
+(22, 2, 'Buat Tugas', 'fa fa-fw fa-clipboard', 'downloadtugas', 1, 2),
+(23, 7, 'Download Materi', 'fa fa-fw fa-download', 'downloadmateri', 1, 1),
+(24, 7, 'Upload Tugas', 'fa fa-fw fa-cloud-upload', 'uploadtugas', 1, 2),
+(26, 8, 'Data Kelas', 'fa fa-fw fa-sitemap', 'kelas', 1, 2),
+(27, 9, 'Daftar Jurusan', 'fa fa-fw fa-list', 'jurusan', 1, 2),
+(36, 2, 'Buat Quiz', 'fa fa-fw fa-commenting', 'buatquiz', 1, 3),
+(37, 7, 'Kerjakan Quiz', 'fa fa-fw fa-clipboard', 'kerjakanquiz', 1, 3),
+(38, 9, 'Profil Sekolah', 'fa fa-fw fa-map', 'sekolah', 1, 1),
+(39, 9, 'Data Guru', 'fa fa-fw fa-mortar-board', 'guru', 1, 3),
+(40, 9, 'Data Siswa', 'fa fa-fw fa-users', 'siswa', 1, 4),
+(41, 8, 'Mata Pelajaran', 'fa  fa-fw fa-book', 'pelajaran', 1, 1),
+(42, 8, 'Abesnsi Guru', 'fa fa-fw fa-list', 'absensi', 1, 3),
+(43, 8, 'Absensi Siswa', 'fa fa-fw fa-list', 'absensi/siswa', 1, 4),
+(44, 2, 'Absen', 'fa fa-fw fa-list', 'absenguru', 1, 4),
+(45, 7, 'Absen', 'fa fa-fw fa-list', 'absensiswa', 1, 4);
 
 --
 -- Indexes for dumped tables
@@ -238,11 +287,23 @@ ALTER TABLE `kelas`
   ADD KEY `fk_jurusan` (`id_jurusan`);
 
 --
+-- Indexes for table `medsos`
+--
+ALTER TABLE `medsos`
+  ADD PRIMARY KEY (`id_medsos`);
+
+--
 -- Indexes for table `pelajaran`
 --
 ALTER TABLE `pelajaran`
   ADD PRIMARY KEY (`id_pelajaran`),
   ADD KEY `fk_kelas` (`id_kelas`);
+
+--
+-- Indexes for table `sekolah`
+--
+ALTER TABLE `sekolah`
+  ADD PRIMARY KEY (`id_sekolah`);
 
 --
 -- Indexes for table `user`
@@ -286,27 +347,37 @@ ALTER TABLE `user_submenu`
 -- AUTO_INCREMENT for table `jurusan`
 --
 ALTER TABLE `jurusan`
-  MODIFY `id_jurusan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_jurusan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `kelas`
 --
 ALTER TABLE `kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `medsos`
+--
+ALTER TABLE `medsos`
+  MODIFY `id_medsos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `pelajaran`
 --
 ALTER TABLE `pelajaran`
   MODIFY `id_pelajaran` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `sekolah`
+--
+ALTER TABLE `sekolah`
+  MODIFY `id_sekolah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user_access`
 --
 ALTER TABLE `user_access`
-  MODIFY `id_access` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id_access` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 --
 -- AUTO_INCREMENT for table `user_menu`
 --
@@ -321,7 +392,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `user_submenu`
 --
 ALTER TABLE `user_submenu`
-  MODIFY `id_submenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_submenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- Constraints for dumped tables
 --

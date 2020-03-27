@@ -1,40 +1,34 @@
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark"><?= $title ?></h1>
-                <input type="hidden" name="id_kelas" id="id_kelas" value="<?= $id ?>">
-            </div>
-        </div>
-    </div>
-</div>
+<section class="content-header">
+    <h1>
+        <?= $title ?>
+    </h1>
+</section>
+
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i>
-                            Daftar Pelajaran kelas <?= $title ?>
-                        </h3>
-                        <br>
-                        <hr>
-                        <button type="button" class="btn btn-info btn-sm" id="kembali"><i class="fas fa-arrow-left"></i> Kembali</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="reload"><i class="fas fa-sync-alt"></i> Refresh</button>
-                        <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fas fa-plus"></i> Tambah</button>
-                    </div>
-                    <div class="card-body pad table-responsive">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Daftar Pelajaran kelas <?= $title ?></h3>
+                    <br>
+                    <hr>
+                    <button type="button" class="btn btn-info btn-sm" id="kembali"><i class="fa fa-arrow-left"></i> Kembali</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="reload"><i class="fa fa-refresh"></i> Refresh</button>
+                    <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fa fa-plus"></i> Tambah</button>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
                         <table class="table table-bordered table-sm" id="myData" width="100%">
                             <thead class="thead-dark">
                                 <tr>
+                                <tr>
                                     <th>No</th>
                                     <th>Nama Pelajaran</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Nama Wali</th>
-                                    <th>No Wali</th>
-                                    <th>Aktif</th>
+                                    <th>Guru</th>
+                                    <th>Hari</th>
+                                    <th>Jam</th>
                                     <th>Aksi</th>
+                                </tr>
                                 </tr>
                             </thead>
                             <tbody id="data">

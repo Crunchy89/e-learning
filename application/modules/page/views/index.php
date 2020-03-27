@@ -49,7 +49,7 @@
 <body>
 	<div class="kotak">
 		<div class="box">
-			<i style="color: white" class="fa fa-8x fa-lock"></i>
+			<i style="color: white" class="fa fa-5x fa-user-secret"></i>
 		</div>
 		<div class="box">
 			<h1 style="color: white">403 Lockdown Corona</h1>
