@@ -16,10 +16,44 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/bower_components/toastr/toastr.min.css">
     <script src="<?= base_url() ?>assets/bower_components/jquery/jquery.min.js"></script>
     <script src="<?= base_url() ?>assets/bower_components/toastr/toastr.min.js"></script>
+    <style type="text/css">
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: #fff;
+        }
+
+        .preloader .loading {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font: 14px arial;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $(".preloader").fadeOut();
+            var page = window.location.hash.substr(1);
+            if (page == "") page = "admin/dashboard";
+            $('#show_data').load('<?= site_url() ?>' + '/' + page);
+
+        });
+    </script>
 </head>
-<?= $this->session->flashdata('pesan') ?>
 
 <body class="hold-transition skin-blue sidebar-mini">
+    <div class="preloader">
+        <div class="loading">
+            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="300">
+            <p class="text-center">Harap Tunggu</p>
+        </div>
+    </div>
+    <?= $this->session->flashdata('pesan') ?>
     <div class="wrapper">
 
         <header class="main-header">
@@ -127,7 +161,7 @@
                     for (var i = 0; i < data.length; i++) {
                         var sub = '';
                         for (var j = 0; j < data[i].submenu.length; j++) {
-                            submenu = '<li data-url="' + data[i].submenu[j].url + '" class="submenu"><a href="#"><i class="' + data[i].submenu[j].icon + '"></i> ' + data[i].submenu[j].title + '</a></li>';
+                            submenu = '<li data-url="' + data[i].submenu[j].url + '" class="submenu"><a href="#' + data[i].submenu[j].url + '"><i class="' + data[i].submenu[j].icon + '"></i> ' + data[i].submenu[j].title + '</a></li>';
                             sub += submenu;
                         }
                         menu += '<li class="treeview">' +
@@ -148,8 +182,26 @@
                         $(this).addClass('active');
                     });
                     $('.submenu').on('click', 'li', function() {
-                        url = $(this).data('url');
-                        $('#show_data').load('<?= site_url() ?>' + '/' + url);
+                        link = $(this).data('url');
+                        $.ajax({
+                            url: '<?= site_url() ?>' + '/' + link,
+                            type: 'get',
+                            success: function(data) {
+                                $('#show_data').html(data);
+                            },
+                            error: function(status) {
+                                let html = '<section class="content">' +
+                                    '<div class = "error-page" >' +
+                                    '<h4 class = "headline text-yellow" >' + status.status + '</h4 >' +
+                                    '<div class = "error-content">' +
+                                    '<h1><i class="fa fa-warning text-yellow" ></i> ' + status.statusText + '</h1>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</section>';
+                                // console.log(status.status);
+                                $('#show_data').html(html);
+                            }
+                        })
                     });
                 }
             });

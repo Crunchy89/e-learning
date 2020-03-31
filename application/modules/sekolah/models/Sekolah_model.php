@@ -20,10 +20,10 @@ class Sekolah_model extends CI_Model
     {
         $gambar_lama = $this->input->post('gambarLama');
         if ($_FILES['gambar']['name']) {
-            $upload = $this->_uploadImage();
-            if ($gambar_lama != "noimage.png") {
-                unlink("assets/img/profile/" . $gambar_lama . "");
-            }
+                $upload = $this->_uploadImage();
+                if ($gambar_lama != "noimage.png") {
+                    unlink("assets/img/profile/" . $gambar_lama . "");
+                }
         } else {
             $upload = $gambar_lama;
         }
@@ -51,13 +51,13 @@ class Sekolah_model extends CI_Model
         if ($this->upload->do_upload('gambar')) {
             $gbr = $this->upload->data();
             $config['image_library'] = 'gd2';
-            $config['source_image'] = './assets/img/foto/' . $gbr['file_name'];
+            $config['source_image'] = './assets/img/profile/' . $gbr['file_name'];
             $config['create_thumb'] = FALSE;
             $config['maintain_ratio'] = FALSE;
             $config['quality'] = '100%';
             $config['width'] = 200;
             $config['height'] = 200;
-            $config['new_image'] = './assets/img/foto/' . $gbr['file_name'];
+            $config['new_image'] = './assets/img/profile/' . $gbr['file_name'];
             $this->load->library('image_lib', $config);
             $this->image_lib->resize();
 

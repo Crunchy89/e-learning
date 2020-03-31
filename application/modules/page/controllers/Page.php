@@ -8,4 +8,8 @@ class Page extends MY_Controller
 	{
 		$this->load->view('index');
 	}
+	public function error()
+	{
+		$this->load->view('error');
+	}
 }

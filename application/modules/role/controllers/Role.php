@@ -38,17 +38,21 @@ class Role extends MY_Controller
 
 		$i = $_POST['start'];
 		foreach ($role as $d) {
+			$disable = '';
+			if ($d->id_role == 1) {
+				$disable = "disabled";
+			}
 			if ($this->session->userdata('role') != 1) {
 				if ($d->id_role != 1) {
 					$i++;
 					$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-role="' . $d->role . '" data-id_role="' . $d->id_role . '"><i class="fa fa-fw fa-edit"></i> Edit</button>';
-					$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fa fa-fw fa-trash"></i> Hapus</button>';
+					$btn_hapus = '<button type="button" ' . $disable . ' class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fa fa-fw fa-trash"></i> Hapus</button>';
 					$data[] = array($i, $d->role, $btn_edit . ' ' . $btn_hapus);
 				}
 			} else {
 				$i++;
 				$btn_edit = '<button type="button" class="btn btn-warning btn-xs edit" data-role="' . $d->role . '" data-id_role="' . $d->id_role . '"><i class="fa fa-fw fa-edit"></i> Edit</button>';
-				$btn_hapus = '<button type="button" class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fa fa-fw fa-trash"></i> Hapus</button>';
+				$btn_hapus = '<button type="button" ' . $disable . ' class="btn btn-danger btn-xs hapus"  data-id_role="' . $d->id_role . '"><i class="fa fa-fw fa-trash"></i> Hapus</button>';
 				$data[] = array($i, $d->role, $btn_edit . ' ' . $btn_hapus);
 			}
 		}

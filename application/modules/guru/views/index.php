@@ -1,3 +1,8 @@
+<script>
+    $(document).ready(function() {
+        $(".preloader").fadeOut();
+    })
+</script>
 <section class="content-header">
     <h1>
         <?= $title ?>

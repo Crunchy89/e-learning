@@ -1,3 +1,8 @@
+<script>
+    $(document).ready(function() {
+        $(".preloader").fadeOut();
+    })
+</script>
 <section class="content-header">
     <h1>
         <?= $title ?>
@@ -12,9 +17,8 @@
                     <h3 class="box-title">Daftar Siswa</h3>
                     <br>
                     <hr>
-                    <button type="button" class="btn btn-info btn-sm" id="kembali"><i class="fa fa-arrow-left"></i> Kembali</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="reload"><i class="fa fa-refresh"></i> Refresh</button>
-                        <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fa fa-plus"></i> Tambah</button>
+                    <a href="#kelas" class="btn btn-info btn-sm" id="kembali"><i class="fa fa-arrow-left"></i> Kembali</a>
+                    <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fa fa-plus"></i> Tambah</button>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -163,10 +167,13 @@
         //     })
         // });
         $('#kembali').click(function() {
-            $('#show_data').load('<?= site_url('kelas') ?>');
-        });
-        $('#reload').click(function() {
-            $('#show_data').load('<?= site_url('siswa/kelas/') ?>' + id_menu);
+            $.ajax({
+                url: '<?= site_url('kelas') ?>',
+                type: 'get',
+                success: function(data) {
+                    $('#show_data').html(data);
+                }
+            })
         });
 
     });

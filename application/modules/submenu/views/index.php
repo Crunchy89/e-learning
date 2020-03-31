@@ -1,3 +1,8 @@
+<script>
+    $(document).ready(function() {
+        $(".preloader").fadeOut();
+    })
+</script>
 <section class="content-header">
     <h1>
         <?= $judul . ' ' . $title ?>
@@ -13,8 +18,7 @@
                     <h3 class="box-title">Submenu Management</h3>
                     <br>
                     <hr>
-                    <button type="button" class="btn btn-info btn-sm" id="kembali"><i class="fa fa-arrow-left"></i> Kembali</button>
-                    <button type="button" class="btn btn-primary btn-sm" id="reload"><i class="fa fa-sync-alt"></i> Refresh</button>
+                    <a href="#menu" class="btn btn-info btn-sm" id="kembali"><i class="fa fa-arrow-left"></i> Kembali</a>
                     <button type="button" class="btn btn-success btn-sm" id="tambah"><i class="fa fa-plus"></i> Tambah</button>
                 </div>
                 <div class="box-body">

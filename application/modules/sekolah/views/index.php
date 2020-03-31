@@ -1,3 +1,8 @@
+<script>
+    $(document).ready(function() {
+        $(".preloader").fadeOut();
+    })
+</script>
 <section class="content-header">
 	<h1>
 		<?= $judul ?>
@@ -337,6 +342,7 @@
 				async: false,
 				success: function(hasil) {
 					toastr['success'](hasil.pesan);
+					$('[name="gambar"]').val('');
 					$.ajax({
 						url: '<?= site_url('sekolah/getProfile') ?>',
 						type: 'POST',
