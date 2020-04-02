@@ -1,8 +1,3 @@
-<script>
-    $(document).ready(function() {
-        $(".preloader").fadeOut();
-    })
-</script>
 <section class="content-header">
     <h1>
         <?= $judul . ' ' . $title ?>
@@ -63,9 +58,15 @@
                         <label for="title">Nama Submenu</label>
                         <input type="text" name="title" id="title" class="form-control form-control-sm" placeholder="Nama Menu" required>
                     </div>
+
                     <div class="form-group">
                         <label for="icon">Icon</label>
+                        <div class="input-group">
                         <input type="text" name="icon" id="icon" class="form-control form-control-sm" placeholder="Icon" required>
+                            <span class="input-group-btn">
+                                <button type="button" id="ti" class="btn btn-info btn-flat">Icon</button>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="url">Url</label>
@@ -77,6 +78,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary" id="btn">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="cons" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Icon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="tes">
+                <div class="modal-body" id="con">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
                 </div>
             </form>
         </div>
@@ -148,6 +170,47 @@
             $('#aksi').val('tambah');
             $('#id_m').val(id_menu);
             $('#modal').modal('show');
+        });
+        $('#form').on('click', '#ti', function() {
+            $('#cons').modal('show');
+            $('#con').html('');
+            var getData = function(data) {
+                $scope = {};
+                $scope.data = data;
+                this.getResult = function() {
+                    return $scope.getResult();
+                }
+                $scope.getResult = function() {
+                    var _jquery = $($scope.data);
+                    return _jquery.find('.fontawesome-icon-list div i');
+                }
+            }
+
+            $(document).ready(function() {
+                $.ajax({
+                    url: '<?= site_url('menu/icon') ?>',
+                    success: function(data) {
+
+                        var tp = new getData(data);
+                        var hasil = tp.getResult();
+                        var icon = '';
+                        for (i = 0; i < hasil.length; i++) {
+                            icon +=
+                                '<div class="col-md-2 col-sm-2"><input type="radio" name="con" value="' +
+                                hasil[i].className + '"> <i class="' +
+                                hasil[i].className +
+                                '"></i></div>';
+                        }
+                        $('#con').html(icon);
+                    }
+                })
+                $('#tes').submit(function(e) {
+                    e.preventDefault();
+                    icon = $('[name="con"]:checked').val();
+                    $('#icon').val(icon);
+                    $('#cons').modal('hide');
+                })
+            });
         });
         $('#data').on('click', '.edit', function() {
             $('.modal-body').html(form);
@@ -225,9 +288,6 @@
         });
         $('#kembali').click(function() {
             $('#show_data').load('<?= site_url('menu') ?>');
-        });
-        $('#reload').click(function() {
-            $('#show_data').load('<?= site_url('submenu/index/') ?>' + id_menu);
         });
 
         $('#data').on('click', '.down', function() {

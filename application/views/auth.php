@@ -34,7 +34,9 @@
     </style>
     <script>
         $(document).ready(function() {
-            $(".preloader").fadeOut();
+            setTimeout(function() {
+                $(".preloader").fadeOut();
+            }, 1000);
         });
     </script>
 </head>
@@ -42,7 +44,7 @@
 <body class="hold-transition login-page">
     <div class="preloader">
         <div class="loading">
-            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="300">
+            <img src="<?= base_url() ?>assets/img/loader.gif" width="300">
             <p class="text-center">Harap Tunggu</p>
         </div>
     </div>

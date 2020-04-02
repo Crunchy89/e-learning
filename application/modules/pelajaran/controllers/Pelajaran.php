@@ -24,14 +24,21 @@ class Pelajaran extends MY_Controller
 		$this->load->model('pelajaran_model', 'model');
 	}
 
-	public function index($id)
+	public function index()
+	{
+		$data = [
+			'title' => 'Mata Pelajaran'
+		];
+		$this->load->view('index', $data);
+	}
+	public function kelas($id)
 	{
 		$cek = $this->db->get_where('kelas', ['id_kelas' => $id])->row();
 		$data = [
 			'title' => $cek->kelas,
 			'id' => $id
 		];
-		$this->load->view('index', $data);
+		$this->load->view('kelas', $data);
 	}
 	// function getLists($id)
 	// {

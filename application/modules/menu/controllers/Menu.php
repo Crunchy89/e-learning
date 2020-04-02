@@ -99,4 +99,8 @@ class Menu extends MY_Controller
 		$data = $this->model->up();
 		echo json_encode($data);
 	}
+	public function icon()
+	{
+		$this->load->view('icons');
+	}
 }
